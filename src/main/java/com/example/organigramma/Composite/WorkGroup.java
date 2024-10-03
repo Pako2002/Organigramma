@@ -5,7 +5,6 @@ public class WorkGroup extends Unit{
 
     public WorkGroup(String name, int level) {
         super(name, level);
-        //TODO Auto-generated constructor stub
     }
 
     public String getName() {
@@ -33,13 +32,11 @@ public class WorkGroup extends Unit{
 
     @Override
     public void addSubUnit(Unit subUnit) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addSubUnit'");
     }
 
     @Override
     public void removeSubUnit(Unit subUnit) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'removeSubUnit'");
     }
 }

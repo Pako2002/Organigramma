@@ -8,7 +8,6 @@ public class CompoundUnit extends Unit{
 
     public CompoundUnit(String name, int level) {
         super(name, level);
-        //TODO Auto-generated constructor stub
     }
 
     public void addSubUnit(Unit subUnit){
