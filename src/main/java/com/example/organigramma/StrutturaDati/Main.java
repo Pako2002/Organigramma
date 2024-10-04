@@ -23,17 +23,26 @@ public class Main{
             System.out.println(e.getName());
         }
         */
-        //System.out.println();
+
+
         CompoundUnitFactory c= new CompoundUnitFactory();
+        Employee emp= new Employee(169, "Mario Rossi");
+        /*
         Unit CA= c.createUnit("Ricerca e Sviluppo", 0);
         Role r= new Role("Pupupipi", 1, 0);
-        Employee emp= new Employee(169, "Mario Rossi");
-        emp.roles.put(CA, r);
 
-        //EmployeeDAO.addEmployee(emp);
-        //Unit AV= c.createUnit("Area Vendite", 1);
-        //Role rl1= new Role("direttore", 1, 0);
-        //EmployeeDAO.addEmployeeRole(emp, AV, rl1);
+        UnitDAO.addUnit(CA);
+        RoleDAO.addRole(r);
+        EmployeeDAO.addEmployee(emp);
+        EmployeeDAO.addEmployeeRole(emp, CA, r);
+        */
+        Unit AV= c.createUnit("Area Vendite", 1);
+        Role rl1= new Role("direttore", 1, 0);
+        UnitDAO.addUnit(AV);
+        RoleDAO.addRole(rl1);
+        EmployeeDAO.addEmployeeRole(emp, AV, rl1);
+        /*
+
         //UnitDAO.removeUnit(AV);
         //UnitDAO.changeName(CA, "Goku VS Vegeta");
         //UnitDAO.changeLevel(CA, 2);
@@ -42,6 +51,7 @@ public class Main{
         //RoleDAO.removeRole(r);
         //RoleDAO.changeName(r,"Pupupipi");
         //RoleDAO.changeLevel(r, 1);
+        /*
         RoleDAO.changePriority(r, 1);
         List<Role> roles= new ArrayList<>();
         roles.addAll(RoleDAO.getAllRole());
@@ -73,7 +83,6 @@ public class Main{
         UnitList.add(CA);
         int maxLevel=maxLevel(UnitList, CA.getLevel());
         //System.out.println(maxLevel);
-
         List<Role> roles= new ArrayList<>();
         roles.addAll(makeRoles(maxLevel));
 

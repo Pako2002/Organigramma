@@ -1,11 +1,7 @@
 package com.example.organigramma.DAO;
 
 //Employee DAO (Data Access Object)
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +23,7 @@ public class EmployeeDAO {
     private static String changeID= "UPDATE Employees\n"+"SET ID =";
     private static String changeName= "UPDATE Employees\n"+"SET Name =";
     private static String changeUnit= "UPDATE EmployeeRoles\n"+"SET UnitName =";
-    private static String changeRole= "UPDATE EmployeeRoles\n"+"SET RoleName ="
-            ;
+    private static String changeRole= "UPDATE EmployeeRoles\n"+"SET RoleName =";
     private static EmployeeDAO istance;
     EmployeeDAO(){}
 
@@ -40,6 +35,32 @@ public class EmployeeDAO {
     }
 
     //ADDING
+    /*
+    public static void addEmployee(Employee employee) {
+        try {
+            Connection con = DriverManager.getConnection(url, user, password);
+            PreparedStatement stmt = con.prepareStatement(addEmployee);
+
+            // Imposta i parametri nella query
+            stmt.setLong(1, employee.getId());
+            stmt.setString(2, employee.getName());
+
+            // Esegue l'inserimento nella tabella employees
+            stmt.executeUpdate();
+
+            // Inserisce i ruoli dell'employee nella tabella roles
+            for (Map.Entry<Unit, Role> entry : employee.roles.entrySet()) {
+                addEmployeeRole(employee, entry.getKey(), entry.getValue());
+            }
+
+            // Chiude la connessione
+            stmt.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    */
     public static void addEmployee(Employee employee){
         try
         {
