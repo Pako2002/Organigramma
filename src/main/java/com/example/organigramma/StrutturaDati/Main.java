@@ -1,7 +1,7 @@
 package com.example.organigramma.StrutturaDati;
 
 import com.example.organigramma.Composite.*;
-import com.example.organigramma.EmployeeStructures.Employee;
+import com.example.organigramma.Composite.Employee;
 import com.example.organigramma.FactoryMethod.*;
 import com.example.organigramma.DAO.EmployeeDAO;
 import com.example.organigramma.DAO.UnitDAO;
@@ -25,7 +25,7 @@ public class Main{
         */
 
 
-        CompoundUnitFactory c= new CompoundUnitFactory();
+        ConcreteUnit c= new ConcreteUnit();
         Employee emp= new Employee(169, "Mario Rossi");
         /*
         Unit CA= c.createUnit("Ricerca e Sviluppo", 0);
@@ -117,22 +117,22 @@ public class Main{
         */
     }
 
-    public static Unit UnitPrompt(int level){
+    public static CompoundUnit UnitPrompt(OrgChart oc, int level){
         //System.out.println("ORGANIGRAMMA AZIENDALE");
-        CompoundUnitFactory factory= new CompoundUnitFactory();
+        ConcreteUnit factory= new ConcreteUnit();
         @SuppressWarnings("resource")
         Scanner sc= new Scanner(System.in);
         String unitName;
         String inputString;
         //String inputString2;
         int numUnit;
-        Unit unit;
 
         System.out.println("Livello Attuale: "+level);
         System.out.println("Crea Unità: ");
         System.out.print("Nome: ");
         unitName=sc.nextLine();
-        unit= factory.createUnit(unitName, level);
+
+        CompoundUnit unit= new CompoundUnit(unitName,level,oc);
         System.out.print("Questa unità ha sotto unità? (SI/NO): ");
         inputString= sc.nextLine();
         if(inputString.equals("SI")){
@@ -140,7 +140,7 @@ public class Main{
             numUnit=sc.nextInt();
             sc.nextLine();
             while (numUnit!=0) {
-                unit.addSubUnit(UnitPrompt(level+1));
+                unit.addSubUnit(UnitPrompt(oc,level+1));
                 numUnit--;
             }
         }
@@ -154,24 +154,24 @@ public class Main{
         return unit;
     }
 
-    public static int maxLevel(List<Unit> list, int max){
+    public static int maxLevel(List<CompoundUnit> list, int max){
         if(list.isEmpty()){
             return max;
         }
         int unitLevel;
-        for(Unit unit: list){
+        for(CompoundUnit unit: list){
             unitLevel=unit.getLevel();
             if(unitLevel>max){
                 max=unitLevel;
             }
             else{
-                max= maxLevel(unit.getSubUnits(), max);
+                max= maxLevel(unit.getSubUnits(),max);
             }
         }
         return max;
     }
 
-    public static List<Role> makeRoles(int maxLevel){
+    public static List<Role> makeRoles(OrgChart oc, int maxLevel){
         List<Role> ris= new ArrayList<>();
         Role role;
         boolean continua= true;
@@ -198,7 +198,7 @@ public class Main{
             System.out.print("Priorità Ruolo: ");
             RolePriority=sc.nextInt();
             sc.nextLine();
-            role= new Role(RoleName, RoleLevel, RolePriority);
+            role= new Role(RoleName, RoleLevel, RolePriority, oc);
             ris.add(role);
             System.out.println("Vuoi inserire altri ruoli? (SI/NO)");
             next=sc.nextLine();
@@ -209,7 +209,7 @@ public class Main{
         return ris;
     }
 
-    public static List<Employee> makeEmployee(List<Unit> units, List<Role> roles, List<Employee> res, int i){
+    public static List<Employee> makeEmployee(OrgChart oc, List<CompoundUnit> units, List<Role> roles, List<Employee> res, int i){
         if(i>=units.size())
             return res;
         boolean keepGoing=true;
@@ -226,12 +226,12 @@ public class Main{
 
             System.out.print("Elenco ruoli assegnabili: ");
             for(int j=0; j<roles.size();j++){
-                System.out.println("    "+j+")"+roles.get(j).getRoleName()+",");
+                System.out.println("    "+j+")"+roles.get(j).getName()+",");
             }
             System.out.print("Assegna un ruolo tramite l'indice: ");
             roleIndex=sc.nextInt();
             sc.nextLine();
-            e= new Employee(id, name);
+            e= new Employee(id, name, oc);
             e.assignRole(units.get(i), roles.get(roleIndex));
             res.add(e);
 
@@ -239,9 +239,9 @@ public class Main{
             choice= sc.nextLine();
             if(choice.equals("NO") ){
                 if(!(units.get(i).getSubUnits().isEmpty())){
-                    makeEmployee(units.get(i).getSubUnits(), roles, res,0);
+                    makeEmployee(oc,units.get(i).getSubUnits(), roles, res,0);
                 }
-                makeEmployee(units, roles, res, i+1);
+                makeEmployee(oc,units, roles, res, i+1);
                 keepGoing=false;
             }
             else{
@@ -253,11 +253,11 @@ public class Main{
     }
 
     //print
-    public static String printOrganigram(List<Unit> units, List<Employee> employees, int i){
+    public static String printOrganigram(List<CompoundUnit> units, List<Employee> employees, int i){
         StringBuilder sb= new StringBuilder();
         if(i>=units.size())
             return sb.toString();
-        Unit u= units.get(i);
+        CompoundUnit u= units.get(i);
         sb.append("Unit: "+u.getName()+", Level: "+u.getLevel()+": ");
         //sb.append(u.showDetails());
         sb.append("Employees: "+getEmployee(u, employees)+"\n");

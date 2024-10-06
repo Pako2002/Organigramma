@@ -1,0 +1,11 @@
+FactoryMethod:
+Partecipanti:
+    -Prodotto(Unit, presente in Composite)
+        Definisce l'interfaccia degli oggetti creati dal metodo factory
+    -ConcreteProduct(CompoundUnit, presente in Composite)
+        Implementa l'interfaccia Product
+    -Creator(UnitFactory)
+        Dichiara il metodo factory, che restituisce un oggetto di tipo product.
+    -ConcreteCreator(ConcreteUnit, ConcreteWorkGroup)
+        Sovrascrive il factory method in modo da restituire un'istanza di uno
+        specifico ConcreteProduct

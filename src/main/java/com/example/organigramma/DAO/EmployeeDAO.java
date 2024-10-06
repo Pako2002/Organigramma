@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.example.organigramma.Composite.OrgChart;
 import com.example.organigramma.Composite.Unit;
-import com.example.organigramma.EmployeeStructures.Employee;
-import com.example.organigramma.FactoryMethod.Role;
+import com.example.organigramma.Composite.Employee;
+import com.example.organigramma.Composite.Role;
 
 public class EmployeeDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
@@ -86,7 +87,7 @@ public class EmployeeDAO {
             Statement stmt= con.createStatement();
             employee.roles.put(unit, role);
             String values="VALUES ";
-            values+="("+employee.getId()+", \'"+unit.getName()+"\', \'"+role.getRoleName()+"\');";
+            values+="("+employee.getId()+", \'"+unit.getName()+"\', \'"+role.getName()+"\');";
             addEmployeeRole+=values;
             stmt.executeUpdate(addEmployeeRole);
 
@@ -181,9 +182,9 @@ public class EmployeeDAO {
             Unit unit= employee.getUnit(oldRole);
             employee.assignRole(unit, newRole);
             //UPDATE Employees\n"+"SET
-            changeRole+="\'"+newRole.getRoleName()+"\'\n";
+            changeRole+="\'"+newRole.getName()+"\'\n";
             String where;
-            where="WHERE EmployeeID = "+employee.getId()+" AND RoleName = \'"+oldRole.getRoleName()+"\';";
+            where="WHERE EmployeeID = "+employee.getId()+" AND RoleName = \'"+oldRole.getName()+"\';";
             changeRole+=where;
             stmt.executeUpdate(changeRole);
             employee.removeRole(unit, oldRole);
@@ -201,7 +202,9 @@ public class EmployeeDAO {
         )
         {
             while (rs.next()){
-                Employee emp = new Employee(rs.getInt("ID"), rs.getString("Name"));
+                OrgChartDAO orgChartDAO= new OrgChartDAO();
+                OrgChart oc= orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
+                Employee emp = new Employee(rs.getInt("ID"), rs.getString("Name"),oc);
                 employees.add(emp);
             }
         } catch (SQLException e) {

@@ -8,17 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.organigramma.Composite.Unit;
-import com.example.organigramma.EmployeeStructures.Employee;
-import com.example.organigramma.FactoryMethod.Role;
-import com.example.organigramma.Composite.CompoundUnit;
+import com.example.organigramma.Composite.*;
 
 public class UnitDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
     private static final String allUnits= "SELECT * FROM units";
-    private static String addUnit= "INSERT INTO units (Name, Level)\n";
+    private static String addUnit= "INSERT INTO units (Name, Level, OrgChartID)\n";
     private static String removeUnit="DELETE FROM units WHERE ";
     private static String removeUnitRole= "DELETE FROM employeeroles WHERE ";
     private static String changeName= "UPDATE units\n"+"SET Name = ";
@@ -41,7 +38,7 @@ public class UnitDAO {
             Statement stmt= con.createStatement();
 
             String values="VALUES ";
-            values+= "(\'"+unit.getName()+"\', "+unit.getLevel()+");";
+            values+= "(\'"+unit.getName()+"\', "+unit.getLevel()+"\', "+unit.getOrgchart().getID()+");";
             addUnit+=values;
             stmt.executeUpdate(addUnit);
         } catch (SQLException e) {
@@ -95,7 +92,7 @@ public class UnitDAO {
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
-            Unit newUnit= new  CompoundUnit(newName, oldUnit.getLevel());
+            Unit newUnit= new  CompoundUnit(newName, oldUnit.getLevel(), oldUnit.getOrgchart());
             Role role;
             for(Employee emp:employees){
                 if(emp.roles.containsKey(oldUnit)){
@@ -136,7 +133,9 @@ public class UnitDAO {
         )
         {
             while (rs.next()){
-                Unit unit= new CompoundUnit(rs.getString("Name"),rs.getInt("Level"));
+                OrgChartDAO orgChartDAO= new OrgChartDAO();
+                OrgChart oc=orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
+                Unit unit= new CompoundUnit(rs.getString("Name"),rs.getInt("Level"), oc);
                 units.add(unit);
             }
         } catch (SQLException e) {

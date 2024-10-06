@@ -2,15 +2,19 @@ package com.example.organigramma.Composite;
 
 import java.util.*;
 
-public class CompoundUnit extends Unit{
+public class CompoundUnit implements Unit{
+    public String name;
+    public int level;
+    public OrgChart orgchart;
+    public List<CompoundUnit> subUnits= new LinkedList<>();
 
-    public List<Unit> subUnits= new LinkedList<>();
-
-    public CompoundUnit(String name, int level) {
-        super(name, level);
+    public CompoundUnit(String name, int level, OrgChart orgchart) {
+        this.name = name;
+        this.level = level;
+        this.orgchart = orgchart;
     }
 
-    public void addSubUnit(Unit subUnit){
+    public void addSubUnit(CompoundUnit subUnit){
         try {
             if(!subUnits.contains(subUnit) && subUnit.getLevel()>this.getLevel())
                 subUnits.add(subUnit);
@@ -32,31 +36,39 @@ public class CompoundUnit extends Unit{
         }
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
-
+    @Override
     public void setName(String name) {
         this.name = name;
     }
-
+    @Override
     public int getLevel() {
         return this.level;
     }
-
+    @Override
     public void setLevel(int level) {
         this.level = level;
     }
+    @Override
+    public OrgChart getOrgchart() {
+        return this.orgchart;
+    }
+    @Override
+    public void setOrgchart(OrgChart orgchart) {
+        this.orgchart = orgchart;
+    }
 
-    public List<Unit> getSubUnits() {
+    public List<CompoundUnit> getSubUnits() {
         return this.subUnits;
     }
 
-    public void setSubUnits(List<Unit> subUnits) {
+    public void setSubUnits(List<CompoundUnit> subUnits) {
         this.subUnits = subUnits;
     }
 
-    @Override
     public String showDetails() {
         StringBuilder sb =new StringBuilder();
         sb.append("Unit: "+getName()+",\n   -Level: "+getLevel()+",\n   -SubUnits: ");

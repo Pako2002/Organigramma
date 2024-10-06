@@ -8,14 +8,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.organigramma.Composite.OrgChart;
 import com.example.organigramma.Composite.Unit;
-import com.example.organigramma.EmployeeStructures.Employee;
-import com.example.organigramma.FactoryMethod.Role;
+import com.example.organigramma.Composite.Employee;
+import com.example.organigramma.Composite.Role;
 
 public class RoleDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
+    private static final String oneRole= "SELECT * FROM roles ";
     private static final String allRoles= "SELECT * FROM roles";
     private static String addRole= "INSERT INTO roles (Name, Level, Priority)\n";
     private static String removeRole="DELETE FROM roles WHERE ";
@@ -41,7 +43,7 @@ public class RoleDAO {
             Statement stmt= con.createStatement();
 
             String values="VALUES ";
-            values+= "(\'"+role.getRoleName()+"\', "+role.getRoleLevel()+", "+role.getRolePriority()+");";
+            values+= "(\'"+role.getName()+"\', "+role.getLevel()+", "+role.getRolePriority()+");";
             addRole+=values;
             stmt.executeUpdate(addRole);
         } catch (SQLException e) {
@@ -55,7 +57,7 @@ public class RoleDAO {
             Statement stmt= con.createStatement();
             String where;
             removeRoleEmployee(role);
-            where="Name = \'"+role.getRoleName()+"\';";
+            where="Name = \'"+role.getName()+"\';";
             removeRole+=where;
             stmt.executeUpdate(removeRole);
         } catch (SQLException e) {
@@ -68,7 +70,7 @@ public class RoleDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String where;
-            where="RoleName = \'"+role.getRoleName()+"\';";
+            where="RoleName = \'"+role.getName()+"\';";
             removeRoleEmployee+=where;
             stmt.executeUpdate(removeRoleEmployee);
             List<Employee> employees = new ArrayList<>();
@@ -90,13 +92,13 @@ public class RoleDAO {
             //UPDATE units\n"+"SET
             changeName+="\'"+newName+"\'\n";
             String where;
-            where="WHERE Name = \'"+oldRole.getRoleName()+"\';";
+            where="WHERE Name = \'"+oldRole.getName()+"\';";
             changeName+=where;
             stmt.executeUpdate(changeName);
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(newName, oldRole.getRoleLevel(), oldRole.getRolePriority());
+            Role newRole= new Role(newName, oldRole.getLevel(), oldRole.getRolePriority(), oldRole.getOrgchart());
             Unit unit;
             for(Employee emp:employees){
                 if(emp.roles.containsValue(oldRole)){
@@ -118,13 +120,13 @@ public class RoleDAO {
             //UPDATE units\n"+"SET
             changeLevel+=level+"\n";
             String where;
-            where="WHERE Name = \'"+oldRole.getRoleName()+"\';";
+            where="WHERE Name = \'"+oldRole.getName()+"\';";
             changeLevel+=where;
             stmt.executeUpdate(changeLevel);
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(oldRole.getRoleName(), level, oldRole.getRolePriority());
+            Role newRole= new Role(oldRole.getName(), level, oldRole.getRolePriority(), oldRole.getOrgchart());
             Unit unit;
             for(Employee emp:employees){
                 if(emp.roles.containsValue(oldRole)){
@@ -146,13 +148,13 @@ public class RoleDAO {
             //UPDATE units\n"+"SET
             changePriority+=priority+"\n";
             String where;
-            where="WHERE Name = \'"+oldRole.getRoleName()+"\';";
+            where="WHERE Name = \'"+oldRole.getName()+"\';";
             changePriority+=where;
             stmt.executeUpdate(changePriority);
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(oldRole.getRoleName(), oldRole.getRoleLevel(), priority);
+            Role newRole= new Role(oldRole.getName(), oldRole.getLevel(), priority, oldRole.getOrgchart());
             Unit unit;
             for(Employee emp:employees){
                 if(emp.roles.containsValue(oldRole)){
@@ -167,6 +169,25 @@ public class RoleDAO {
         }
     }
 
+    public static Role getRole(String roleName){
+        Role ris=null;
+        try (
+                Connection con= DriverManager.getConnection(url, user, password);
+                Statement stmt= con.createStatement();
+        )
+        {
+            String where;
+            where=oneRole+"WHERE Name = "+roleName+";";
+            ResultSet rs= stmt.executeQuery(where);
+            OrgChartDAO orgChartDAO= new OrgChartDAO();
+            OrgChart oc= orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
+            ris= new Role(rs.getString("Name"), rs.getInt("Level"), rs.getInt("Priority"),oc);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ris;
+    }
+
     public static List<Role> getAllRole(){
         List<Role> roles= new ArrayList<>();
         try (
@@ -176,7 +197,9 @@ public class RoleDAO {
         )
         {
             while (rs.next()){
-                Role role= new Role(rs.getString("Name"), rs.getInt("Level"), rs.getInt("Priority"));
+                OrgChartDAO orgChartDAO= new OrgChartDAO();
+                OrgChart oc= orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
+                Role role= new Role(rs.getString("Name"), rs.getInt("Level"), rs.getInt("Priority"),oc);
                 roles.add(role);
             }
         } catch (SQLException e) {
