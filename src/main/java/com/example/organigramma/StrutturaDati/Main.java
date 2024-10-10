@@ -117,7 +117,7 @@ public class Main{
         */
     }
 
-    public static CompoundUnit UnitPrompt(OrgChart oc, int level){
+    public static CompoundUnit UnitPrompt(int level){
         //System.out.println("ORGANIGRAMMA AZIENDALE");
         ConcreteUnit factory= new ConcreteUnit();
         @SuppressWarnings("resource")
@@ -132,7 +132,7 @@ public class Main{
         System.out.print("Nome: ");
         unitName=sc.nextLine();
 
-        CompoundUnit unit= new CompoundUnit(unitName,level,oc);
+        CompoundUnit unit= new CompoundUnit(unitName,level);
         System.out.print("Questa unità ha sotto unità? (SI/NO): ");
         inputString= sc.nextLine();
         if(inputString.equals("SI")){
@@ -140,7 +140,7 @@ public class Main{
             numUnit=sc.nextInt();
             sc.nextLine();
             while (numUnit!=0) {
-                unit.addSubUnit(UnitPrompt(oc,level+1));
+                unit.addSubUnit(UnitPrompt(level+1));
                 numUnit--;
             }
         }
@@ -171,7 +171,7 @@ public class Main{
         return max;
     }
 
-    public static List<Role> makeRoles(OrgChart oc, int maxLevel){
+    public static List<Role> makeRoles(int maxLevel){
         List<Role> ris= new ArrayList<>();
         Role role;
         boolean continua= true;
@@ -198,7 +198,7 @@ public class Main{
             System.out.print("Priorità Ruolo: ");
             RolePriority=sc.nextInt();
             sc.nextLine();
-            role= new Role(RoleName, RoleLevel, RolePriority, oc);
+            role= new Role(RoleName, RoleLevel, RolePriority);
             ris.add(role);
             System.out.println("Vuoi inserire altri ruoli? (SI/NO)");
             next=sc.nextLine();

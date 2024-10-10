@@ -17,6 +17,13 @@ public class OrgChartDAO {
     private static final String password="";
     private static final String oneChart= "SELECT * FROM orgcharts ";
     private static final String allOrgChart= "SELECT * FROM orgcharts";
+    /*
+    private static String addUnit= "INSERT INTO units (Name, Level)\n";
+    private static String removeUnit="DELETE FROM units WHERE ";
+    private static String removeUnitRole= "DELETE FROM employeeroles WHERE ";
+    private static String changeName= "UPDATE units\n"+"SET Name = ";
+    private static String changeLevel= "UPDATE units\n"+"SET Level =";
+     */
 
     private static OrgChartDAO instance;
     OrgChartDAO(){}

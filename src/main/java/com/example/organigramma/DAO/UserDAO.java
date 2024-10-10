@@ -12,6 +12,13 @@ public class UserDAO {
     private static final String password="";
     private static final String oneUser="SELECT * FROM users ";
     private static final String allUser= "SELECT * FROM users";
+    /*
+    private static String addUnit= "INSERT INTO units (Name, Level)\n";
+    private static String removeUnit="DELETE FROM units WHERE ";
+    private static String removeUnitRole= "DELETE FROM employeeroles WHERE ";
+    private static String changeName= "UPDATE units\n"+"SET Name = ";
+    private static String changeLevel= "UPDATE units\n"+"SET Level =";
+     */
 
     private static UserDAO instance;
     UserDAO() {}

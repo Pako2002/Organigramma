@@ -98,7 +98,7 @@ public class RoleDAO {
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(newName, oldRole.getLevel(), oldRole.getRolePriority(), oldRole.getOrgchart());
+            Role newRole= new Role(newName, oldRole.getLevel(), oldRole.getRolePriority());
             Unit unit;
             for(Employee emp:employees){
                 if(emp.roles.containsValue(oldRole)){
@@ -126,7 +126,7 @@ public class RoleDAO {
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(oldRole.getName(), level, oldRole.getRolePriority(), oldRole.getOrgchart());
+            Role newRole= new Role(oldRole.getName(), level, oldRole.getRolePriority());
             Unit unit;
             for(Employee emp:employees){
                 if(emp.roles.containsValue(oldRole)){
@@ -154,7 +154,7 @@ public class RoleDAO {
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(oldRole.getName(), oldRole.getLevel(), priority, oldRole.getOrgchart());
+            Role newRole= new Role(oldRole.getName(), oldRole.getLevel(), priority);
             Unit unit;
             for(Employee emp:employees){
                 if(emp.roles.containsValue(oldRole)){
@@ -179,9 +179,7 @@ public class RoleDAO {
             String where;
             where=oneRole+"WHERE Name = "+roleName+";";
             ResultSet rs= stmt.executeQuery(where);
-            OrgChartDAO orgChartDAO= new OrgChartDAO();
-            OrgChart oc= orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
-            ris= new Role(rs.getString("Name"), rs.getInt("Level"), rs.getInt("Priority"),oc);
+            ris= new Role(rs.getString("Name"), rs.getInt("Level"), rs.getInt("Priority"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -197,9 +195,7 @@ public class RoleDAO {
         )
         {
             while (rs.next()){
-                OrgChartDAO orgChartDAO= new OrgChartDAO();
-                OrgChart oc= orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
-                Role role= new Role(rs.getString("Name"), rs.getInt("Level"), rs.getInt("Priority"),oc);
+                Role role= new Role(rs.getString("Name"), rs.getInt("Level"), rs.getInt("Priority"));
                 roles.add(role);
             }
         } catch (SQLException e) {

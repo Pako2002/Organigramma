@@ -10,7 +10,7 @@ public class Employee extends Role{
     public Map<Unit, Role> roles= new HashMap<>(); //può avere più unità, ma solo un ruolo per unità
 
     public Employee(long id, String name, OrgChart orgchart) {
-        super("",0,0,null);  // non so se sia la soluzione corretta
+        super("",0,0);  // non so se sia la soluzione corretta
         this.id=id;
         this.name=name;
         this.orgchart =orgchart;

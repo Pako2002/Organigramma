@@ -5,7 +5,7 @@ public class WorkGroup implements Unit{
     public int level;
     public OrgChart orgchart;
 
-    public WorkGroup(String name, int level, OrgChart orgchart) {
+    public WorkGroup(String name, int level) {
         this.name = name;
         this.level = level;
         this.orgchart = orgchart;

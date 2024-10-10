@@ -8,7 +8,7 @@ public class CompoundUnit implements Unit{
     public OrgChart orgchart;
     public List<CompoundUnit> subUnits= new LinkedList<>();
 
-    public CompoundUnit(String name, int level, OrgChart orgchart) {
+    public CompoundUnit(String name, int level) {
         this.name = name;
         this.level = level;
         this.orgchart = orgchart;

@@ -6,7 +6,7 @@ public class Role implements Unit{
     private int priority;
     private OrgChart orgCharts;
 
-    public Role(String Role, int level, int priority, OrgChart orgCharts){
+    public Role(String Role, int level, int priority){
         this.roleName=Role;
         this.level=level;
         this.priority=priority;
@@ -33,6 +33,7 @@ public class Role implements Unit{
         this.level = level;
     }
 
+    //do la possibilità di gestire OrgChart per ogni singolo ruolo o unit
     @Override
     public OrgChart getOrgchart() {
         return this.orgCharts;
@@ -40,15 +41,15 @@ public class Role implements Unit{
 
     @Override
     public void setOrgchart(OrgChart orgchart) {
-        this.orgCharts = orgchart;
-    }
 
-    public int getRolePriority() {
-        return this.priority;
     }
 
     public void setRolePriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getRolePriority() {
+        return this.priority;
     }
 
 }

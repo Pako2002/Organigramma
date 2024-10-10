@@ -15,7 +15,7 @@ public class UnitDAO {
     private static final String user="root";
     private static final String password="";
     private static final String allUnits= "SELECT * FROM units";
-    private static String addUnit= "INSERT INTO units (Name, Level, OrgChartID)\n";
+    private static String addUnit= "INSERT INTO units (Name, Level)\n";
     private static String removeUnit="DELETE FROM units WHERE ";
     private static String removeUnitRole= "DELETE FROM employeeroles WHERE ";
     private static String changeName= "UPDATE units\n"+"SET Name = ";
@@ -38,7 +38,7 @@ public class UnitDAO {
             Statement stmt= con.createStatement();
 
             String values="VALUES ";
-            values+= "(\'"+unit.getName()+"\', "+unit.getLevel()+"\', "+unit.getOrgchart().getID()+");";
+            values+= "(\'"+unit.getName()+"\', "+unit.getLevel()+");";
             addUnit+=values;
             stmt.executeUpdate(addUnit);
         } catch (SQLException e) {
@@ -92,7 +92,7 @@ public class UnitDAO {
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
-            Unit newUnit= new  CompoundUnit(newName, oldUnit.getLevel(), oldUnit.getOrgchart());
+            Unit newUnit= new  CompoundUnit(newName, oldUnit.getLevel());
             Role role;
             for(Employee emp:employees){
                 if(emp.roles.containsKey(oldUnit)){
@@ -133,9 +133,7 @@ public class UnitDAO {
         )
         {
             while (rs.next()){
-                OrgChartDAO orgChartDAO= new OrgChartDAO();
-                OrgChart oc=orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
-                Unit unit= new CompoundUnit(rs.getString("Name"),rs.getInt("Level"), oc);
+                Unit unit= new CompoundUnit(rs.getString("Name"), rs.getInt("Level"));
                 units.add(unit);
             }
         } catch (SQLException e) {

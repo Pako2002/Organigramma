@@ -6,7 +6,7 @@ import com.example.organigramma.Composite.WorkGroup;
 
 public class ConcreteWorkGroup implements UnitFactory{
     @Override
-    public Unit createUnit(String name, int level, OrgChart orgchart) {
-        return new WorkGroup(name, level, orgchart);
+    public Unit createUnit(String name, int level) {
+        return new WorkGroup(name, level);
     }
 }

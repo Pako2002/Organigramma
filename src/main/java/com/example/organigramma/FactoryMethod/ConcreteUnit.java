@@ -7,7 +7,7 @@ import com.example.organigramma.Composite.CompoundUnit;
 
 public class ConcreteUnit implements UnitFactory{
     @Override
-    public Unit createUnit(String name, int level, OrgChart orgchart) {
-        return new CompoundUnit(name, level, orgchart);
+    public Unit createUnit(String name, int level) {
+        return new CompoundUnit(name, level);
     }
 }

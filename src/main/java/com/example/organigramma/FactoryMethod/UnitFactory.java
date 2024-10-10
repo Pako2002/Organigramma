@@ -4,5 +4,5 @@ import com.example.organigramma.Composite.OrgChart;
 import com.example.organigramma.Composite.Unit;
 
 public interface UnitFactory {
-    public abstract Unit createUnit(String name, int level, OrgChart orgchart);
+    public abstract Unit createUnit(String name, int level);
 }
