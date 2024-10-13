@@ -3,9 +3,7 @@ package com.example.organigramma.StrutturaDati;
 import com.example.organigramma.Composite.*;
 import com.example.organigramma.Composite.Employee;
 import com.example.organigramma.FactoryMethod.*;
-import com.example.organigramma.DAO.EmployeeDAO;
-import com.example.organigramma.DAO.UnitDAO;
-import com.example.organigramma.DAO.RoleDAO;
+import com.example.organigramma.DAO.*;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +13,18 @@ import java.util.ArrayList;
 public class Main{
 
     public static void main(String[] args) {
+
+        User user= new User(1,"Mario Rossi", "blablabla");
+        //UserDAO.addUser(user);
+        OrgChart oc= new OrgChart(1, "Organigramma1", user);
+        //OrgChartDAO.addOrgChart(oc);
+        Unit unit= new CompoundUnit("Capitani di domani", 1);
+        //UnitDAO.addUnit(unit);
+        Role role= new Role("CapitanFindus",1,0);
+        //RoleDAO.addRole(role);
+        RoleDAO.addOrgChartUnitsRoles(oc,unit,role);
+
+
         /*
         EmployeeDAO.getInstance();
         List<Employee> employees= new ArrayList<>();
@@ -22,12 +32,11 @@ public class Main{
         for(Employee e: employees){
             System.out.println(e.getName());
         }
-        */
 
 
         ConcreteUnit c= new ConcreteUnit();
         Employee emp= new Employee(169, "Mario Rossi");
-        /*
+
         Unit CA= c.createUnit("Ricerca e Sviluppo", 0);
         Role r= new Role("Pupupipi", 1, 0);
 
@@ -35,7 +44,7 @@ public class Main{
         RoleDAO.addRole(r);
         EmployeeDAO.addEmployee(emp);
         EmployeeDAO.addEmployeeRole(emp, CA, r);
-        */
+
         Unit AV= c.createUnit("Area Vendite", 1);
         Role rl1= new Role("direttore", 1, 0);
         UnitDAO.addUnit(AV);
