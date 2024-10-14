@@ -22,8 +22,27 @@ public class Main{
         //UnitDAO.addUnit(unit);
         Role role= new Role("CapitanFindus",1,0);
         //RoleDAO.addRole(role);
-        RoleDAO.addOrgChartUnitsRoles(oc,unit,role);
+        //RoleDAO.addOrgChartUnitsRoles(oc,unit,role);
+        Employee emp = new Employee(1, "Pippo Baudo", oc);
+        //EmployeeDAO.addEmployee(emp);
+        //EmployeeDAO.addEmployeeRole(emp,unit,role);
 
+        //aggiungo un nuovo ruolo
+        Role role2= new Role("Timoniere",1,1);
+        //RoleDAO.addRole(role2);
+        //RoleDAO.addOrgChartUnitsRoles(oc,unit,role2);
+
+        //aggiungo un nuovo dipendente
+        Employee emp2 = new Employee(2, "Pistolo Pipino", oc);
+        //EmployeeDAO.addEmployee(emp2);
+        //EmployeeDAO.addEmployeeRole(emp2,unit,role2);
+
+        //aggiungo nuovo utente e nuovo orgchart
+        User user2= new User(2,"Filippo Turetta", "pipinoilbreve");
+        //UserDAO.addUser(user2);
+        OrgChart oc2= new OrgChart(2, "Organigramma1", user2);
+        //OrgChartDAO.addOrgChart(oc2);
+        RoleDAO.addOrgChartUnitsRoles(oc2,unit,role);
 
         /*
         EmployeeDAO.getInstance();

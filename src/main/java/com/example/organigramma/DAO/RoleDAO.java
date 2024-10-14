@@ -20,7 +20,7 @@ public class RoleDAO {
     private static final String oneRole= "SELECT * FROM roles ";
     private static final String allRoles= "SELECT * FROM roles";
     private static String addRole= "INSERT INTO roles (Name, Level, Priority)\n";
-    private static String addOrgChartUnitsRoles= "INSERT INTO orgchartunitsroles (OrgChartID, UnitName, RoleName)\n";
+    private static String addOrgChartUnitsRoles= "INSERT INTO orgchartunitsroles (OrgChartID, UnitName, RoleName, Level)\n";
     private static String removeRole="DELETE FROM roles WHERE ";
     private static String removeRoleEmployee= "DELETE FROM employeeroles WHERE ";
     private static String changeName= "UPDATE roles\n"+"SET Name = ";
@@ -43,7 +43,7 @@ public class RoleDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String values="VALUES ";
-            values+="("+oc.getID()+", \'"+unit.getName()+"\', \'"+role.getName()+"\');";
+            values+="("+oc.getID()+", \'"+unit.getName()+"\', \'"+role.getName()+"\', "+role.getLevel()+");";
             addOrgChartUnitsRoles+=values;
             stmt.executeUpdate(addOrgChartUnitsRoles);
 

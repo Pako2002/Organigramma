@@ -17,7 +17,7 @@ public class EmployeeDAO {
     private static final String user="root";
     private static final String password="";
     private static final String allEmployees= "SELECT * FROM employees";
-    private static String addEmployee= "INSERT INTO employees (ID, Name)\n";
+    private static String addEmployee= "INSERT INTO employees (ID, Name, OrgChartID)\n";
     private static String addEmployeeRole= "INSERT INTO employeeroles (EmployeeID, UnitName, RoleName)\n";
     private static String removeEmployee="DELETE FROM employees WHERE ";
     private static String removeEmployeeRole= "DELETE FROM employeeroles WHERE ";
@@ -68,7 +68,7 @@ public class EmployeeDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String values="VALUES ";
-            values+= "("+employee.getId()+", \'"+employee.getName()+"\');";
+            values+= "("+employee.getId()+", \'"+employee.getName()+"\', "+employee.getOrgchart().getID()+");";
             addEmployee+=values;
             stmt.executeUpdate(addEmployee);
             for(Map.Entry<Unit,Role> entry: employee.roles.entrySet()){
