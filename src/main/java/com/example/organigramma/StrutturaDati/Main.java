@@ -42,7 +42,7 @@ public class Main{
         //UserDAO.addUser(user2);
         OrgChart oc2= new OrgChart(2, "Organigramma1", user2);
         //OrgChartDAO.addOrgChart(oc2);
-        RoleDAO.addOrgChartUnitsRoles(oc2,unit,role);
+        //RoleDAO.addOrgChartUnitsRoles(oc2,unit,role);
 
         /*
         EmployeeDAO.getInstance();

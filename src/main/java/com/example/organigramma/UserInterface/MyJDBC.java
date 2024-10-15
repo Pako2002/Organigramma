@@ -1,4 +1,4 @@
-package com.example.organigramma;
+package com.example.organigramma.UserInterface;
 
 import java.sql.*;
 
