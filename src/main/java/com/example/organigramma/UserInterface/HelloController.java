@@ -33,7 +33,7 @@ public class HelloController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
         root = loader.load();
 
-        User user= new User(1,username, password);
+        User user= new User(username, password);
         UserDAO.addUser(user);
 
         Scene2Controller scene2controller = loader.getController();

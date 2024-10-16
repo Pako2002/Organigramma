@@ -14,7 +14,7 @@ public class Main{
 
     public static void main(String[] args) {
 
-        User user= new User(1,"Mario Rossi", "blablabla");
+        User user= new User("Mario Rossi", "blablabla");
         //UserDAO.addUser(user);
         OrgChart oc= new OrgChart(1, "Organigramma1", user);
         //OrgChartDAO.addOrgChart(oc);
@@ -38,7 +38,7 @@ public class Main{
         //EmployeeDAO.addEmployeeRole(emp2,unit,role2);
 
         //aggiungo nuovo utente e nuovo orgchart
-        User user2= new User(2,"Filippo Turetta", "pipinoilbreve");
+        User user2= new User("Filippo Turetta", "pipinoilbreve");
         //UserDAO.addUser(user2);
         OrgChart oc2= new OrgChart(2, "Organigramma1", user2);
         //OrgChartDAO.addOrgChart(oc2);

@@ -3,21 +3,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class User {
-    private int ID;
+    //private int ID;
     private String Name;
     private String password;
 
-    public User(int ID, String Name, String password) {
-        this.ID = ID;
+    public User(String Name, String password) {
+        //this.ID = ID;
         this.Name = Name;
         this.password = password;
     }
-    public int getID() {
-        return ID;
-    }
-    public void setID(int ID) {
-        this.ID = ID;
-    }
+    //public int getID() {return ID;}
+    //public void setID(int ID) {this.ID = ID;}
     public String getName() {
         return Name;
     }

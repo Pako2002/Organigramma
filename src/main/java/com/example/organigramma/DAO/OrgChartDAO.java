@@ -86,7 +86,7 @@ public class OrgChartDAO {
             Statement stmt= con.createStatement();
 
             String values="VALUES ";
-            values+= "(\'"+oc.getID()+"\', \'"+oc.getName()+"\', \'"+oc.getUser().getID()+"\');";
+            values+= "(\'"+oc.getID()+"\', \'"+oc.getName()+"\', \'"+UserDAO.getID(oc.getUser().getName())+"\');";
             addOrgChart+=values;
             stmt.executeUpdate(addOrgChart);
         } catch (SQLException e) {
@@ -105,7 +105,7 @@ public class OrgChartDAO {
             where=oneChart+"WHERE OrgChartID = "+id+";";
             ResultSet rs= stmt.executeQuery(where);
             UserDAO userDAO = new UserDAO();
-            User us= userDAO.getUser(rs.getInt("UserID"));
+            User us= userDAO.getUser(rs.getString("UserName"));
             res= new OrgChart(rs.getLong("OrgCharID"), rs.getString("OrgCharName"), us);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -123,7 +123,7 @@ public class OrgChartDAO {
         {
             while (rs.next()){
                 UserDAO userDAO = new UserDAO();
-                User us= userDAO.getUser(rs.getInt("UserID"));
+                User us= userDAO.getUser(rs.getString("UserName"));
                 OrgChart oc= new OrgChart(rs.getLong("OrgChartID"), rs.getString("OrgChartName"), us);
                 orgcharts.add(oc);
             }

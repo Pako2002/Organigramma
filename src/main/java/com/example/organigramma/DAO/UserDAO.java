@@ -11,8 +11,9 @@ public class UserDAO {
     private static final String user="root";
     private static final String password="";
     private static final String oneUser="SELECT * FROM users ";
+    private static final String userID="SELECT ID FROM users ";
     private static final String allUser= "SELECT * FROM users";
-    private static String addUser= "INSERT INTO users (UserID, UserName, Password)\n";
+    private static String addUser= "INSERT INTO users (UserName, Password)\n";
     private static String removeUser="DELETE FROM users WHERE ";
     private static String changeName= "UPDATE users\n"+"SET UserName = ";
     private static String changePassword= "UPDATE users\n"+"SET Password =";
@@ -33,7 +34,7 @@ public class UserDAO {
             Statement stmt= con.createStatement();
             changePassword+="\'"+newPassword+"\'\n";
             String where;
-            where="WHERE UserID = \'"+oldUser.getID()+"\';";
+            where="WHERE UserID = \'"+getID(oldUser.getName())+"\';";
             changePassword+=where;
             stmt.executeUpdate(changePassword);
         } catch (SQLException e) {
@@ -47,7 +48,7 @@ public class UserDAO {
             Statement stmt= con.createStatement();
             changeName+="\'"+newName+"\'\n";
             String where;
-            where="WHERE UserID = \'"+oldUser.getID()+"\';";
+            where="WHERE UserID = \'"+getID(oldUser.getName())+"\';";
             changeName+=where;
             stmt.executeUpdate(changeName);
         } catch (SQLException e) {
@@ -61,7 +62,7 @@ public class UserDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String where;
-            where="UserID = \'"+us.getID()+"\';";
+            where="UserID = \'"+getID(us.getName())+"\';";
             removeUser+=where;
             stmt.executeUpdate(removeUser);
         } catch (SQLException e) {
@@ -76,14 +77,31 @@ public class UserDAO {
             Statement stmt= con.createStatement();
 
             String values="VALUES ";
-            values+= "(\'"+us.getID()+"\', \'"+us.getName()+"\', \'"+us.getPassword()+"\');";
+            values+= "(\'"+us.getName()+"\', \'"+us.getPassword()+"\');";
             addUser+=values;
             stmt.executeUpdate(addUser);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public static User getUser(int id){
+
+    public static int getID(String username){
+        int res=0;
+        try (
+                Connection con= DriverManager.getConnection(url, user, password);
+                Statement stmt= con.createStatement();
+        )
+        {
+            String where;
+            where=userID+"WHERE UserName = "+username+";";
+            ResultSet rs= stmt.executeQuery(where);
+            res= rs.getInt("UserID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+    public static User getUser(String username){
         User res=null;
         try (
                 Connection con= DriverManager.getConnection(url, user, password);
@@ -91,9 +109,9 @@ public class UserDAO {
         )
         {
             String where;
-            where=oneUser+"WHERE UserID = "+id+";";
+            where=oneUser+"WHERE UserName = "+username+";";
             ResultSet rs= stmt.executeQuery(where);
-            res= new User(rs.getInt("UserID"), rs.getString("UserName"), rs.getString("Password"));
+            res= new User(rs.getString("UserName"), rs.getString("Password"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -108,7 +126,7 @@ public class UserDAO {
         )
         {
             while (rs.next()){
-                User us= new User(rs.getInt("UserID"), rs.getString("UserName"), rs.getString("Password"));
+                User us= new User(rs.getString("UserName"), rs.getString("Password"));
                 users.add(us);
             }
         } catch (SQLException e) {
