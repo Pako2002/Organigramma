@@ -70,7 +70,15 @@ public class UserDAO {
         }
     }
 
-    public static void addUser(User us){
+    public static void addUser(User us) throws SQLException{
+        Connection con= DriverManager.getConnection(url, user, password);
+        Statement stmt= con.createStatement();
+
+        String values="VALUES ";
+        values+= "(\'"+us.getName()+"\', \'"+us.getPassword()+"\');";
+        addUser+=values;
+        stmt.executeUpdate(addUser);
+        /*
         try
         {
             Connection con= DriverManager.getConnection(url, user, password);
@@ -83,6 +91,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+         */
     }
 
     public static int getID(String username){
