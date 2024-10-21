@@ -71,6 +71,14 @@ public class UserDAO {
     }
 
     public static void addUser(User us) throws SQLException{
+
+        Connection con= DriverManager.getConnection(url, user, password);
+        Statement stmt= con.createStatement();
+
+        String values=String.format("VALUES (%s, %s)",us.getName(),us.getPassword());
+        addUser+=values;
+        stmt.executeUpdate(addUser);
+        /*
         Connection con= DriverManager.getConnection(url, user, password);
         Statement stmt= con.createStatement();
 

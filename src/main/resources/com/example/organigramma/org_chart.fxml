@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.organigramma.UserInterface.OrgChartController"
+      alignment="CENTER" spacing="20" style="-fx-padding: 20;">
+    <Label text="Gestione Organigramma" style="-fx-font-size: 20px;"/>
+
+    <!-- Sezione per inserire nuove unità -->
+    <HBox alignment="CENTER" spacing="10">
+        <Label text="Nome Unità:"/>
+        <TextField fx:id="unitNameField"/>
+        <Label text="Livello:"/>
+        <TextField fx:id="unitLevelField"/>
+        <Button text="Aggiungi Unità" onAction="#addUnit"/>
+    </HBox>
+
+    <!-- Area per visualizzare l'organigramma -->
+    <Pane fx:id="orgChartPane" prefHeight="400" prefWidth="600"
+          style="-fx-border-color: black; -fx-background-color: white;"/>
+
+    <!-- Pulsante per aggiornare l'organigramma -->
+    <Button text="Genera Organigramma" onAction="#generateOrgChart"/>
+</VBox>

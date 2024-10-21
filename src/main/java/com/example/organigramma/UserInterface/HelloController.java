@@ -36,6 +36,7 @@ public class HelloController {
         String username = nameTextField.getText();
         String password = passwordTextField.getText();
 
+        /*
         User user= new User(username, password);
         UserDAO.addUser(user);
 
@@ -49,22 +50,23 @@ public class HelloController {
         scene=new Scene(root);
         stage.setScene(scene);
         stage.show();
-        /*
-        boolean correct=true;
+
+        */
+
         try{
             User user= new User(username, password);
             UserDAO.addUser(user);
         } catch (Exception e) {
-            correct=false;
             Alert alert= new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("This user already exist!");
             System.out.println("cacata nel puzzo");
             if(alert.showAndWait().get()== ButtonType.OK){
                 e.printStackTrace();
+                nameTextField.clear();
+                passwordTextField.clear();
             }
-        }
-        if(correct){
+        }finally {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
             root = loader.load();
             Scene2Controller scene2controller = loader.getController();
@@ -76,7 +78,6 @@ public class HelloController {
             stage.setScene(scene);
             stage.show();
         }
-         */
     }
 
     /*

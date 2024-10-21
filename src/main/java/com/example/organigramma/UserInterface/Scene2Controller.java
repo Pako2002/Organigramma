@@ -37,14 +37,15 @@ public class Scene2Controller {
     }
 
     public void newOrg(ActionEvent event) throws IOException {
-        root=  FXMLLoader.load(getClass().getResource("/com/example/organigramma/NewOrgScene.fxml"));
-        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root);
+        root = FXMLLoader.load(getClass().getResource("/com/example/organigramma/NewOrgScene.fxml"));
+        stage = (Stage) scenePane.getScene().getWindow(); // Ottieni lo Stage dalla scenePane
+        scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
 
         System.out.println("newOrg");
     }
+
 
     public void save(){
         System.out.println("Save Org");
