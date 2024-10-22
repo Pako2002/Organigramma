@@ -59,7 +59,7 @@ public class NewOrgController {
         String subUnitName = SubUnitName.getText();
         int subUnitLevel = Integer.parseInt(SubUnitLevel.getText());
         System.out.println(unitName);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddEmplRole.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddEmployeeScene.fxml"));
         root = loader.load();
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);

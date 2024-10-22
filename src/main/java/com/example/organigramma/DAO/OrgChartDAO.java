@@ -15,7 +15,7 @@ public class OrgChartDAO {
     private static final String user="root";
     private static final String password="";
     private static final String oneChart= "SELECT * FROM orgcharts ";
-    private static final String allOrgChart= "SELECT * FROM orgcharts";
+    private static final String allOrgChart= "SELECT * FROM orgcharts ";
     private static String addOrgChart= "INSERT INTO orgcharts (OrgChartID, OrgChartName, UserID)\n";
     private static String removeOrgChart="DELETE FROM orgcharts WHERE ";
     private static String removeOUR= "DELETE FROM orgchartunitsroles WHERE ";
@@ -50,14 +50,14 @@ public class OrgChartDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String where;
-            where="OrgChartID = \'"+oc.getID()+"\';";
+            where="OrgChartName = \'"+oc.getName()+"\';";
             removeOUR+=where;
             stmt.executeUpdate(removeOUR);
             //qui elimino tutti i dipendenti associati all'organigramma eliminato. Non vado a toccare unità e ruoli poiché compaiono in altri org
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             for(Employee emp:employees){
-                if(emp.getOrgchart().equals(oc.getID()))
+                if(emp.getOrgchart().equals(getID(oc.getName())))
                     EmployeeDAO.removeEmployee(emp);
             }
         } catch (SQLException e) {
@@ -70,7 +70,7 @@ public class OrgChartDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String where;
-            where="OrgChartID = \'"+oc.getID()+"\';";
+            where="OrgChartName = \'"+oc.getName()+"\';";
             removeOrgChart+=where;
             stmt.executeUpdate(removeOrgChart);
             removeOUR(oc);
@@ -86,7 +86,7 @@ public class OrgChartDAO {
             Statement stmt= con.createStatement();
 
             String values="VALUES ";
-            values+= "(\'"+oc.getID()+"\', \'"+oc.getName()+"\', \'"+UserDAO.getID(oc.getUser().getName())+"\');";
+            values+= "(\'"+getID(oc.getName())+"\', \'"+oc.getName()+"\', \'"+UserDAO.getID(oc.getUser().getName())+"\');";
             addOrgChart+=values;
             stmt.executeUpdate(addOrgChart);
         } catch (SQLException e) {
@@ -106,7 +106,24 @@ public class OrgChartDAO {
             ResultSet rs= stmt.executeQuery(where);
             UserDAO userDAO = new UserDAO();
             User us= userDAO.getUser(rs.getString("UserName"));
-            res= new OrgChart(rs.getLong("OrgCharID"), rs.getString("OrgCharName"), us);
+            res= new OrgChart(rs.getString("OrgCharName"), us);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    public static int getID(String orgName){
+        int res=0;
+        try (
+                Connection con= DriverManager.getConnection(url, user, password);
+                Statement stmt= con.createStatement();
+        )
+        {
+            String where;
+            where=oneChart+"WHERE OrgChartName = "+orgName+";";
+            ResultSet rs= stmt.executeQuery(where);
+            res=rs.getInt("OrgCharID");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,7 +141,7 @@ public class OrgChartDAO {
             while (rs.next()){
                 UserDAO userDAO = new UserDAO();
                 User us= userDAO.getUser(rs.getString("UserName"));
-                OrgChart oc= new OrgChart(rs.getLong("OrgChartID"), rs.getString("OrgChartName"), us);
+                OrgChart oc= new OrgChart(rs.getString("OrgChartName"), us);
                 orgcharts.add(oc);
             }
         } catch (SQLException e) {

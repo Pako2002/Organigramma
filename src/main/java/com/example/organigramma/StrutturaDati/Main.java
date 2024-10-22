@@ -16,7 +16,7 @@ public class Main{
 
         User user= new User("Mario Rossi", "blablabla");
         //UserDAO.addUser(user);
-        OrgChart oc= new OrgChart(1, "Organigramma1", user);
+        OrgChart oc= new OrgChart("Organigramma1", user);
         //OrgChartDAO.addOrgChart(oc);
         Unit unit= new CompoundUnit("Capitani di domani", 1);
         //UnitDAO.addUnit(unit);
@@ -40,7 +40,7 @@ public class Main{
         //aggiungo nuovo utente e nuovo orgchart
         User user2= new User("Filippo Turetta", "pipinoilbreve");
         //UserDAO.addUser(user2);
-        OrgChart oc2= new OrgChart(2, "Organigramma1", user2);
+        OrgChart oc2= new OrgChart("Organigramma1", user2);
         //OrgChartDAO.addOrgChart(oc2);
         //RoleDAO.addOrgChartUnitsRoles(oc2,unit,role);
 

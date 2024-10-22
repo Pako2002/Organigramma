@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="UnitNamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.organigramma.UserInterface.NewOrgController">
+<AnchorPane fx:id="UnitNamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.organigramma.UserInterface.Scene2Controller">
     <children>
         <Label layoutX="14.0" layoutY="14.0" text="Unità">
             <font>
@@ -23,7 +23,7 @@
             <Font size="13.0" />
          </font>
       </TextField>
-      <Button layoutX="65.0" layoutY="115.0" mnemonicParsing="false" text="AddUnit" />
+      <Button fx:id="AddUnitButton" layoutX="65.0" layoutY="115.0" mnemonicParsing="false" onAction="#AddUnit" text="AddUnit" />
       <Label layoutX="14.0" layoutY="156.0" text="SottoUnità">
          <font>
             <Font size="18.0" />
@@ -31,8 +31,8 @@
       </Label>
       <TextField fx:id="SubUnitName" layoutX="14.0" layoutY="183.0" promptText="NomeUnità" />
       <TextField fx:id="SubUnitLevel" layoutX="14.0" layoutY="218.0" promptText="LivelloUnità" />
-      <Button layoutX="55.0" layoutY="253.0" mnemonicParsing="false" text="AddSubUnit" />
-        <Button fx:id="NextEmplRole" layoutX="500.0" layoutY="342.0" mnemonicParsing="false" onAction="#NextEmplRole" text="Next">
+      <Button fx:id="AddSubUnitButton" layoutX="55.0" layoutY="253.0" mnemonicParsing="false" onAction="#AddSubUnit" text="AddSubUnit" />
+        <Button fx:id="NextRoleButton" layoutX="500.0" layoutY="342.0" mnemonicParsing="false" onAction="#NextRole" text="Next">
             <font>
                 <Font size="15.0" />
             </font>

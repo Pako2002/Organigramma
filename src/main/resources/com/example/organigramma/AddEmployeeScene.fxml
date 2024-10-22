@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.organigramma.UserInterface.NewOrgController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.organigramma.UserInterface.Scene2Controller">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Emplyee">
          <font>
@@ -23,16 +23,7 @@
                <Font size="13.0" />
            </font>
        </TextField>
-      <Label layoutX="14.0" layoutY="117.0" text="Role">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <TextField fx:id="EmployeeRole" layoutX="14.0" layoutY="147.0" promptText="EmployeeRole">
-         <font>
-            <Font size="13.0" />
-         </font></TextField>
-       <Button layoutX="58.0" layoutY="190.0" mnemonicParsing="false" text="AddRole" />
+       <Button fx:id="AddEmployeeButton" layoutX="50.0" layoutY="116.0" mnemonicParsing="false" onAction="#AddEmplyee" text="AddEmployee" />
       <Button fx:id="EndButton" layoutX="500.0" layoutY="342.0" mnemonicParsing="false" onAction="#EndAction" prefHeight="31.0" prefWidth="65.0" text="End">
          <font>
             <Font size="15.0" />

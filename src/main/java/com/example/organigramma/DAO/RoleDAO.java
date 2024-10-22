@@ -43,7 +43,8 @@ public class RoleDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String values="VALUES ";
-            values+="("+oc.getID()+", \'"+unit.getName()+"\', \'"+role.getName()+"\', "+role.getLevel()+");";
+            OrgChartDAO orgDAO=new OrgChartDAO();
+            values+="("+orgDAO.getID(oc.getName())+", \'"+unit.getName()+"\', \'"+role.getName()+"\', "+role.getLevel()+");";
             addOrgChartUnitsRoles+=values;
             stmt.executeUpdate(addOrgChartUnitsRoles);
 

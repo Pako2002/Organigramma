@@ -68,7 +68,8 @@ public class EmployeeDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String values="VALUES ";
-            values+= "("+employee.getId()+", \'"+employee.getName()+"\', "+employee.getOrgchart().getID()+");";
+            OrgChartDAO orgChartDAO=new OrgChartDAO();
+            values+= "("+employee.getId()+", \'"+employee.getName()+"\', "+orgChartDAO.getID(employee.getOrgchart().getName())+");";
             addEmployee+=values;
             stmt.executeUpdate(addEmployee);
             for(Map.Entry<Unit,Role> entry: employee.roles.entrySet()){
