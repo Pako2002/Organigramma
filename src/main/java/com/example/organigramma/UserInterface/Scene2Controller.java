@@ -4,19 +4,23 @@ import com.example.organigramma.Composite.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class Scene2Controller {
+public class Scene2Controller implements Initializable {
 
     //MainScene Section
     @FXML
@@ -70,6 +74,13 @@ public class Scene2Controller {
     private Button AddSubUnitButton;
     @FXML
     private Button AddEmployeeButton;
+    //Organigram Area Section
+    @FXML
+    private Pane orgChartPane;
+    @FXML
+    private ChoiceBox<String> parentChoiceBox;
+    private List<String> unitNameList;
+
     //Variables Section
     private User user;
     private OrgChart orgChart;
@@ -98,6 +109,7 @@ public class Scene2Controller {
 
         Scene2Controller controller = loader.getController();
         controller.setUser(USER_NAME,PASSWORD);
+        //nameLabel.setText("Hello: "+USER_NAME+" your password is: "+PASSWORD);
 
         stage = (Stage) scenePane.getScene().getWindow(); // Ottieni lo Stage dalla scenePane
         scene = new Scene(root);
@@ -107,19 +119,21 @@ public class Scene2Controller {
     public void setUser(String userName, String password){
         this.USER_NAME = userName;
         this.PASSWORD = password;
+        user=new User(USER_NAME,PASSWORD);
     }
 
-    public void NextUnit(ActionEvent event) throws IOException {
+    public void NextUnit(ActionEvent event) throws IOException {    //Questo pulsante porta alla sezione per inserire le unità
         String name = OrgName.getText();
         user = new User(USER_NAME, PASSWORD);
         orgChart= new OrgChart(name, user);
-        System.out.println(user.getName());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddUnitScene.fxml"));
         root = loader.load();
 
         Scene2Controller controller = loader.getController();
         controller.setOrgChart(orgChart);
+        controller.setUser(USER_NAME,PASSWORD);
+        //System.out.println(user.getName());
 
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);
@@ -136,9 +150,19 @@ public class Scene2Controller {
         String unitName = UnitName.getText();
         int unitLevel = Integer.parseInt(UnitLevel.getText());
         unit= new CompoundUnit(unitName, unitLevel);
-
+        unitNameList.add(unit.getName());
         unclickable=true;
         AddUnitButton.setDisable(unclickable);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (parentChoiceBox != null) {
+            parentChoiceBox.getItems().addAll(unitNameList);
+            parentChoiceBox.setOnAction(this::AddSubUnit); //l'operatore "::" è un method reference operator
+        } else {
+            System.out.println("parentChoiceBox is null");
+        }
     }
 
     public void AddSubUnit(ActionEvent actionEvent) {
@@ -146,17 +170,38 @@ public class Scene2Controller {
         int subUnitLevel = Integer.parseInt(SubUnitLevel.getText());
 
         CompoundUnit subUnit= new CompoundUnit(subUnitName, subUnitLevel);
-        unit.addSubUnit(subUnit);
+        unitNameList.add(subUnit.getName());
+        //In base alla scelta dell'utente aggiungeremo un unità come sotto-unità di un'altra specificata da lui
+        if(parentChoiceBox.getValue().equals(unit.getName())){
+            unit.addSubUnit(subUnit);
+        }
+        else{
+            setParent(unit.getSubUnits(),subUnit,0).addSubUnit(subUnit);
+        }
 
         SubUnitName.clear();
         SubUnitLevel.clear();
     }
-    public void NextRole(ActionEvent event) throws IOException, SQLException {
+    private CompoundUnit setParent(List<CompoundUnit> units, CompoundUnit subUnit, int i){
+        if(i>=units.size())
+            return null;
+        if(units.get(i).getName().equals(parentChoiceBox.getValue())){
+            return units.get(i);
+        }
+        if(units.get(i).hasSubUnit()){
+            setParent(units.get(i).getSubUnits(),subUnit,0);
+        }
+        return setParent(units,subUnit,i+1);
+    }
+    public void NextRole(ActionEvent event) throws IOException, SQLException {  //Questo pulsante porta alla sezione per inserire i ruoli
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddRoleScene.fxml"));
         root = loader.load();
 
         Scene2Controller controller = loader.getController();
         controller.setUnit(unit);
+        controller.setOrgChart(orgChart);
+        controller.setUser(USER_NAME,PASSWORD);
+        //System.out.println(unit.getName());
 
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);
@@ -180,12 +225,19 @@ public class Scene2Controller {
         RolePriority.clear();
     }
 
-    public void NextEmployee(ActionEvent event) throws IOException {
+    public void NextEmployee(ActionEvent event) throws IOException {    //Questo pulsante porta alla sezione per inserire i dipendenti
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddEmployeeScene.fxml"));
         root = loader.load();
 
         Scene2Controller controller = loader.getController();
         controller.setRoles(roles);
+        controller.setUnit(unit);
+        controller.setOrgChart(orgChart);
+        controller.setUser(USER_NAME,PASSWORD);
+        //System.out.println(user.getName());
+        //System.out.println(orgChart.getName());
+        //System.out.println(unit.getName());
+        //System.out.println(roles.size());
 
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);
@@ -203,18 +255,22 @@ public class Scene2Controller {
         Employee emp= new Employee(employeeID,employeeName,orgChart);
         employees.add(emp);
 
-        System.out.println(employeeName);
+        //System.out.println(employeeName);
     }
 
     public void EndAction(ActionEvent event) throws IOException, SQLException {
         //unclickable=false;
         //AddUnitButton.setDisable(unclickable);
-        test();
+        //test();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
         root = loader.load();
         Scene2Controller controller = loader.getController();
         controller.setEmployees(employees);
-        //displayName(USER_NAME,PASSWORD);
+        controller.setRoles(roles);
+        controller.setUnit(unit);
+        controller.setOrgChart(orgChart);
+        controller.setUser(USER_NAME,PASSWORD);
+        controller.displayName(USER_NAME,PASSWORD);
 
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);

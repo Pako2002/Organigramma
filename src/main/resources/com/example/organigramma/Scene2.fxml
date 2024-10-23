@@ -7,10 +7,11 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
 <AnchorPane fx:id="scenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.organigramma.UserInterface.Scene2Controller">
    <children>
-      <Label fx:id="nameLabel" layoutX="285.0" layoutY="192.0" text="Hello:" />
+      <Label fx:id="nameLabel" layoutX="14.0" layoutY="369.0" text="Hello:" />
       <MenuBar prefHeight="25.0" prefWidth="600.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
@@ -38,5 +39,6 @@
             </Menu>
         </menus>
       </MenuBar>
+      <Pane fx:id="orgChartPane" layoutX="117.0" layoutY="25.0" prefHeight="343.0" prefWidth="483.0" style="-fx-border-color: black; -fx-background-color: #D3D3D3;" />
    </children>
 </AnchorPane>

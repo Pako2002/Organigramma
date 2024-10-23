@@ -65,6 +65,10 @@ public class CompoundUnit implements Unit{
         return this.subUnits;
     }
 
+    public boolean hasSubUnit(){
+        return this.getSubUnits() != null;
+    }
+
     public void setSubUnits(List<CompoundUnit> subUnits) {
         this.subUnits = subUnits;
     }
