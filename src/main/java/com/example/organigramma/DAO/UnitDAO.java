@@ -15,11 +15,11 @@ public class UnitDAO {
     private static final String user="root";
     private static final String password="";
     private static final String allUnits= "SELECT * FROM units";
-    private static String addUnit= "INSERT INTO units (Name, Level)\n";
-    private static String removeUnit="DELETE FROM units WHERE ";
-    private static String removeUnitRole= "DELETE FROM employeeroles WHERE ";
-    private static String changeName= "UPDATE units\n"+"SET Name = ";
-    private static String changeLevel= "UPDATE units\n"+"SET Level =";
+    private static final String addUnit= "INSERT INTO units (Name, Level)\n";
+    private static final String removeUnit="DELETE FROM units WHERE ";
+    private static final String removeUnitRole= "DELETE FROM employeeroles WHERE ";
+    private static final String changeName= "UPDATE units\n"+"SET Name = ";
+    private static final String changeLevel= "UPDATE units\n"+"SET Level =";
 
     private static UnitDAO istance;
     UnitDAO(){}
@@ -37,10 +37,11 @@ public class UnitDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
 
-            String values="VALUES ";
+            String values=addUnit;
+            values+="VALUES ";
             values+= "(\'"+unit.getName()+"\', "+unit.getLevel()+");";
-            addUnit+=values;
-            stmt.executeUpdate(addUnit);
+            System.out.println(values);
+            stmt.executeUpdate(values);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,11 +51,10 @@ public class UnitDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
+            String where=removeUnit;
             removeUnitRole(unit);
-            where="Name = \'"+unit.getName()+"\';";
-            removeUnit+=where;
-            stmt.executeUpdate(removeUnit);
+            where+="Name = \'"+unit.getName()+"\';";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,10 +64,9 @@ public class UnitDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
-            where="UnitName = \'"+unit.getName()+"\';";
-            removeUnitRole+=where;
-            stmt.executeUpdate(removeUnitRole);
+            String where=removeUnitRole;
+            where+="UnitName = \'"+unit.getName()+"\';";
+            stmt.executeUpdate(where);
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             for(Employee emp:employees){
@@ -84,11 +83,10 @@ public class UnitDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             //UPDATE units\n"+"SET
-            changeName+="\'"+newName+"\'\n";
-            String where;
+            String where=changeName;
+            where+="\'"+newName+"\'\n";
             where="WHERE Name = \'"+oldUnit.getName()+"\';";
-            changeName+=where;
-            stmt.executeUpdate(changeName);
+            stmt.executeUpdate(where);
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
@@ -114,11 +112,10 @@ public class UnitDAO {
             //UPDATE units\n"+"SET
             //Attenzione cambiando il livello l'unità dovrà essere riassegnata
             removeUnitRole(unit);
-            changeLevel+=newLevel+"\n";
-            String where;
+            String where=changeLevel;
+            where+=newLevel+"\n";
             where="WHERE Name = \'"+unit.getName()+"\';";
-            changeLevel+=where;
-            stmt.executeUpdate(changeLevel);
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }

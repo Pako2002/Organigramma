@@ -11,12 +11,12 @@ public class UserDAO {
     private static final String user="root";
     private static final String password="";
     private static final String oneUser="SELECT * FROM users ";
-    private static final String userID="SELECT ID FROM users ";
+    private static final String userID="SELECT UserID FROM users\n";
     private static final String allUser= "SELECT * FROM users";
-    private static String addUser= "INSERT INTO users (UserName, Password)\n";
-    private static String removeUser="DELETE FROM users WHERE ";
-    private static String changeName= "UPDATE users\n"+"SET UserName = ";
-    private static String changePassword= "UPDATE users\n"+"SET Password =";
+    private static final String addUser= "INSERT INTO users (UserName, Password)\n";
+    private static final String removeUser="DELETE FROM users WHERE ";
+    private static final String changeName= "UPDATE users\n"+"SET UserName = ";
+    private static final String changePassword= "UPDATE users\n"+"SET Password =";
 
     private static UserDAO instance;
     UserDAO() {}
@@ -32,11 +32,10 @@ public class UserDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            changePassword+="\'"+newPassword+"\'\n";
-            String where;
-            where="WHERE UserID = \'"+getID(oldUser.getName())+"\';";
-            changePassword+=where;
-            stmt.executeUpdate(changePassword);
+            String where=changePassword;
+            where+="\'"+newPassword+"\'\n";
+            where+="WHERE UserID = \'"+getID(oldUser.getName())+"\';";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,11 +45,10 @@ public class UserDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            changeName+="\'"+newName+"\'\n";
-            String where;
-            where="WHERE UserID = \'"+getID(oldUser.getName())+"\';";
-            changeName+=where;
-            stmt.executeUpdate(changeName);
+            String where=changeName;
+            where+="\'"+newName+"\'\n";
+            where+="WHERE UserID = \'"+getID(oldUser.getName())+"\';";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,10 +59,9 @@ public class UserDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
-            where="UserID = \'"+getID(us.getName())+"\';";
-            removeUser+=where;
-            stmt.executeUpdate(removeUser);
+            String where=removeUser;
+            where+="UserID = \'"+getID(us.getName())+"\';";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,31 +72,9 @@ public class UserDAO {
         Connection con= DriverManager.getConnection(url, user, password);
         Statement stmt= con.createStatement();
 
-        String values=String.format("VALUES (\'%s\', \'%s\')",us.getName(),us.getPassword());
-        addUser+=values;
-        stmt.executeUpdate(addUser);
-        /*
-        Connection con= DriverManager.getConnection(url, user, password);
-        Statement stmt= con.createStatement();
-
-        String values="VALUES ";
-        values+= "(\'"+us.getName()+"\', \'"+us.getPassword()+"\');";
-        addUser+=values;
-        stmt.executeUpdate(addUser);
-        /*
-        try
-        {
-            Connection con= DriverManager.getConnection(url, user, password);
-            Statement stmt= con.createStatement();
-
-            String values="VALUES ";
-            values+= "(\'"+us.getName()+"\', \'"+us.getPassword()+"\');";
-            addUser+=values;
-            stmt.executeUpdate(addUser);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-         */
+        String values=addUser;
+        values+=String.format("VALUES (\'%s\', \'%s\')",us.getName(),us.getPassword());
+        stmt.executeUpdate(values);
     }
 
     public static int getID(String username){
@@ -110,8 +85,9 @@ public class UserDAO {
         )
         {
             String where;
-            where=userID+"WHERE UserName = "+username+";";
+            where=userID+"WHERE UserName = \'"+username+"\';";
             ResultSet rs= stmt.executeQuery(where);
+            rs.next();
             res= rs.getInt("UserID");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,8 +101,8 @@ public class UserDAO {
                 Statement stmt= con.createStatement();
         )
         {
-            String where;
-            where=oneUser+"WHERE UserName = "+username+";";
+            String where=oneUser;
+            where+="WHERE UserName = \'"+username+"\';";
             ResultSet rs= stmt.executeQuery(where);
             res= new User(rs.getString("UserName"), rs.getString("Password"));
         } catch (SQLException e) {

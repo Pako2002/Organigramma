@@ -16,10 +16,10 @@ public class OrgChartDAO {
     private static final String password="";
     private static final String oneChart= "SELECT * FROM orgcharts ";
     private static final String allOrgChart= "SELECT * FROM orgcharts ";
-    private static String addOrgChart= "INSERT INTO orgcharts (OrgChartID, OrgChartName, UserID)\n";
-    private static String removeOrgChart="DELETE FROM orgcharts WHERE ";
-    private static String removeOUR= "DELETE FROM orgchartunitsroles WHERE ";
-    private static String changeName= "UPDATE orgcharts\n"+"SET OrgChartName = ";
+    private static final String addOrgChart= "INSERT INTO orgcharts (OrgChartName, UserID)\n";
+    private static final String removeOrgChart="DELETE FROM orgcharts WHERE ";
+    private static final String removeOUR= "DELETE FROM orgchartunitsroles WHERE ";
+    private static final String changeName= "UPDATE orgcharts\n"+"SET OrgChartName = ";
 
     private static OrgChartDAO instance;
     OrgChartDAO(){}
@@ -35,11 +35,10 @@ public class OrgChartDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            changeName+="\'"+newName+"\'\n";
-            String where;
-            where="WHERE OrgChartName = \'"+oldOC.getName()+"\';";
-            changeName+=where;
-            stmt.executeUpdate(changeName);
+            String where=changeName;
+            where+="\'"+newName+"\'\n";
+            where+="WHERE OrgChartName = \'"+oldOC.getName()+"\';";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -49,10 +48,9 @@ public class OrgChartDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
-            where="OrgChartName = \'"+oc.getName()+"\';";
-            removeOUR+=where;
-            stmt.executeUpdate(removeOUR);
+            String where=removeOUR;
+            where+="OrgChartName = \'"+oc.getName()+"\';";
+            stmt.executeUpdate(where);
             //qui elimino tutti i dipendenti associati all'organigramma eliminato. Non vado a toccare unità e ruoli poiché compaiono in altri org
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
@@ -69,10 +67,9 @@ public class OrgChartDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
-            where="OrgChartName = \'"+oc.getName()+"\';";
-            removeOrgChart+=where;
-            stmt.executeUpdate(removeOrgChart);
+            String where=removeOrgChart;
+            where+="OrgChartName = \'"+oc.getName()+"\';";
+            stmt.executeUpdate(where);
             removeOUR(oc);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,10 +82,10 @@ public class OrgChartDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
 
-            String values="VALUES ";
-            values+= "(\'"+getID(oc.getName())+"\', \'"+oc.getName()+"\', \'"+UserDAO.getID(oc.getUser().getName())+"\');";
-            addOrgChart+=values;
-            stmt.executeUpdate(addOrgChart);
+            String values=addOrgChart;
+            values+="VALUES ";
+            values+= "(\'"+oc.getName()+"\', \'"+UserDAO.getID(oc.getUser().getName())+"\');";
+            stmt.executeUpdate(values);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -121,9 +118,10 @@ public class OrgChartDAO {
         )
         {
             String where;
-            where=oneChart+"WHERE OrgChartName = "+orgName+";";
+            where=oneChart+"WHERE OrgChartName = \'"+orgName+"\';";
             ResultSet rs= stmt.executeQuery(where);
-            res=rs.getInt("OrgCharID");
+            rs.next();
+            res=rs.getInt("OrgChartID");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -17,14 +17,15 @@ public class EmployeeDAO {
     private static final String user="root";
     private static final String password="";
     private static final String allEmployees= "SELECT * FROM employees";
-    private static String addEmployee= "INSERT INTO employees (ID, Name, OrgChartID)\n";
-    private static String addEmployeeRole= "INSERT INTO employeeroles (EmployeeID, UnitName, RoleName)\n";
-    private static String removeEmployee="DELETE FROM employees WHERE ";
-    private static String removeEmployeeRole= "DELETE FROM employeeroles WHERE ";
-    private static String changeID= "UPDATE Employees\n"+"SET ID =";
-    private static String changeName= "UPDATE Employees\n"+"SET Name =";
-    private static String changeUnit= "UPDATE EmployeeRoles\n"+"SET UnitName =";
-    private static String changeRole= "UPDATE EmployeeRoles\n"+"SET RoleName =";
+    private static final String addEmployee= "INSERT INTO employees (ID, Name, OrgChartID)\n";
+    private static final String addEmployeeRole= "INSERT INTO employeeroles (EmployeeID, UnitName, RoleName)\n";
+    private static final String removeEmployee="DELETE FROM employees WHERE ";
+    private static final String removeEmployeeRole= "DELETE FROM employeeroles WHERE ";
+    private static final String changeID= "UPDATE Employees\n"+"SET ID =";
+    private static final String changeName= "UPDATE Employees\n"+"SET Name =";
+    private static final String changeUnit= "UPDATE EmployeeRoles\n"+"SET UnitName =";
+    private static final String changeRole= "UPDATE EmployeeRoles\n"+"SET RoleName =";
+
     private static EmployeeDAO istance;
     EmployeeDAO(){}
 
@@ -67,11 +68,11 @@ public class EmployeeDAO {
         {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String values="VALUES ";
+            String values=addEmployee;
+            values+="VALUES ";
             OrgChartDAO orgChartDAO=new OrgChartDAO();
             values+= "("+employee.getId()+", \'"+employee.getName()+"\', "+orgChartDAO.getID(employee.getOrgchart().getName())+");";
-            addEmployee+=values;
-            stmt.executeUpdate(addEmployee);
+            stmt.executeUpdate(values);
             for(Map.Entry<Unit,Role> entry: employee.roles.entrySet()){
                 addEmployeeRole(employee, entry.getKey(), entry.getValue());
             }
@@ -87,10 +88,10 @@ public class EmployeeDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             employee.roles.put(unit, role);
-            String values="VALUES ";
+            String values=addEmployeeRole;
+            values+="VALUES ";
             values+="("+employee.getId()+", \'"+unit.getName()+"\', \'"+role.getName()+"\');";
-            addEmployeeRole+=values;
-            stmt.executeUpdate(addEmployeeRole);
+            stmt.executeUpdate(values);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,11 +102,10 @@ public class EmployeeDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
+            String where=removeEmployee;
             removeEmployeeRole(employee);
-            where="ID = \'"+employee.getId()+"\';";
-            removeEmployee+=where;
-            stmt.executeUpdate(removeEmployee);
+            where+="ID = \'"+employee.getId()+"\';";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -115,10 +115,9 @@ public class EmployeeDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
-            where="EmployeeID = "+employee.getId()+";";
-            removeEmployeeRole+=where;
-            stmt.executeUpdate(removeEmployeeRole);
+            String where=removeEmployeeRole;
+            where+="EmployeeID = "+employee.getId()+";";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -129,11 +128,10 @@ public class EmployeeDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             //UPDATE Employees\n"+"SET
-            changeID+=newID+"\n";
-            String where;
-            where="WHERE ID = "+employee.getId()+";";
-            changeID+=where;
-            stmt.executeUpdate(changeID);
+            String where=changeID;
+            where+=newID+"\n";
+            where+="WHERE ID = "+employee.getId()+";";
+            stmt.executeUpdate(where);
             employee.setId(newID);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -145,11 +143,10 @@ public class EmployeeDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             //UPDATE Employees\n"+"SET
-            changeName+="\'"+newName+"\'\n";
-            String where;
-            where="WHERE ID = "+employee.getId()+";";
-            changeName+=where;
-            stmt.executeUpdate(changeName);
+            String where=changeName;
+            where+="\'"+newName+"\'\n";
+            where+="WHERE ID = "+employee.getId()+";";
+            stmt.executeUpdate(where);
             employee.setName(newName);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -164,11 +161,10 @@ public class EmployeeDAO {
             Role role=employee.getRole(oldUnit);
             employee.assignRole(newUnit, role); //assegno il dipendente ad una nuova Unità con il vecchio ruolo
             //UPDATE Employees\n"+"SET
-            changeUnit+="\'"+newUnit.getName()+"\'\n";
-            String where;
-            where="WHERE EmployeeID = "+employee.getId()+" AND UnitName = \'"+oldUnit.getName()+"\';";
-            changeUnit+=where;
-            stmt.executeUpdate(changeUnit);
+            String where=changeUnit;
+            where+="\'"+newUnit.getName()+"\'\n";
+            where+="WHERE EmployeeID = "+employee.getId()+" AND UnitName = \'"+oldUnit.getName()+"\';";
+            stmt.executeUpdate(where);
 
             employee.removeRole(oldUnit, role);
         } catch (SQLException e) {
@@ -183,11 +179,10 @@ public class EmployeeDAO {
             Unit unit= employee.getUnit(oldRole);
             employee.assignRole(unit, newRole);
             //UPDATE Employees\n"+"SET
-            changeRole+="\'"+newRole.getName()+"\'\n";
-            String where;
-            where="WHERE EmployeeID = "+employee.getId()+" AND RoleName = \'"+oldRole.getName()+"\';";
-            changeRole+=where;
-            stmt.executeUpdate(changeRole);
+            String where=changeRole;
+            where+="\'"+newRole.getName()+"\'\n";
+            where+="WHERE EmployeeID = "+employee.getId()+" AND RoleName = \'"+oldRole.getName()+"\';";
+            stmt.executeUpdate(where);
             employee.removeRole(unit, oldRole);
         } catch (SQLException e) {
             e.printStackTrace();

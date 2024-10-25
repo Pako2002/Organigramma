@@ -5,6 +5,7 @@ import com.example.organigramma.Composite.Employee;
 import com.example.organigramma.FactoryMethod.*;
 import com.example.organigramma.DAO.*;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -12,14 +13,14 @@ import java.util.ArrayList;
 
 public class Main{
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         User user= new User("Mario Rossi", "blablabla");
         //UserDAO.addUser(user);
         OrgChart oc= new OrgChart("Organigramma1", user);
         //OrgChartDAO.addOrgChart(oc);
         Unit unit= new CompoundUnit("Capitani di domani", 1);
-        //UnitDAO.addUnit(unit);
+        UnitDAO.addUnit(unit);
         Role role= new Role("CapitanFindus",1,0);
         //RoleDAO.addRole(role);
         //RoleDAO.addOrgChartUnitsRoles(oc,unit,role);

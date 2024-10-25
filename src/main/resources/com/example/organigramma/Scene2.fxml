@@ -39,6 +39,6 @@
             </Menu>
         </menus>
       </MenuBar>
-      <Pane fx:id="orgChartPane" layoutX="117.0" layoutY="25.0" prefHeight="343.0" prefWidth="483.0" style="-fx-border-color: black; -fx-background-color: #D3D3D3;" />
+      <Pane fx:id="OrgChartPane" layoutX="117.0" layoutY="25.0" prefHeight="343.0" prefWidth="483.0" style="-fx-border-color: black; -fx-background-color: #D3D3D3;" />
    </children>
 </AnchorPane>

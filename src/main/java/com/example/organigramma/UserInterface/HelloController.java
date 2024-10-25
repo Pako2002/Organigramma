@@ -56,28 +56,26 @@ public class HelloController {
         try{
             User user= new User(username, password);
             UserDAO.addUser(user);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
+            root = loader.load();
+            Scene2Controller scene2controller = loader.getController();
+            scene2controller.displayName(username,password);
+            //root=  FXMLLoader.load(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
+            stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+            scene=new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         } catch (Exception e) {
             Alert alert= new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("This user already exist!");
             System.out.println("cacata nel puzzo");
             if(alert.showAndWait().get()== ButtonType.OK){
-                e.printStackTrace();
+                //e.printStackTrace();
                 nameTextField.clear();
                 passwordTextField.clear();
             }
-        }finally {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
-            root = loader.load();
-            Scene2Controller scene2controller = loader.getController();
-            scene2controller.displayName(username,password);
-
-
-            //root=  FXMLLoader.load(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
-            stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-            scene=new Scene(root);
-            stage.setScene(scene);
-            stage.show();
         }
     }
 

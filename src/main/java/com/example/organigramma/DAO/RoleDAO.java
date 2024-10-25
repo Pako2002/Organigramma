@@ -19,13 +19,13 @@ public class RoleDAO {
     private static final String password="";
     private static final String oneRole= "SELECT * FROM roles ";
     private static final String allRoles= "SELECT * FROM roles";
-    private static String addRole= "INSERT INTO roles (Name, Level, Priority)\n";
-    private static String addOrgChartUnitsRoles= "INSERT INTO orgchartunitsroles (OrgChartID, UnitName, RoleName, Level)\n";
-    private static String removeRole="DELETE FROM roles WHERE ";
-    private static String removeRoleEmployee= "DELETE FROM employeeroles WHERE ";
-    private static String changeName= "UPDATE roles\n"+"SET Name = ";
-    private static String changeLevel= "UPDATE roles\n"+"SET Level =";
-    private static String changePriority= "UPDATE roles\n"+"SET Priority =";
+    private static final String addRole= "INSERT INTO roles (Name, Level, Priority)\n";
+    private static final String addOrgChartUnitsRoles= "INSERT INTO orgchartunitsroles (OrgChartID, UnitName, RoleName, Level)\n";
+    private static final String removeRole="DELETE FROM roles WHERE ";
+    private static final String removeRoleEmployee= "DELETE FROM employeeroles WHERE ";
+    private static final String changeName= "UPDATE roles\n"+"SET Name = ";
+    private static final String changeLevel= "UPDATE roles\n"+"SET Level =";
+    private static final String changePriority= "UPDATE roles\n"+"SET Priority =";
 
     private static RoleDAO istance;
     RoleDAO(){}
@@ -42,11 +42,11 @@ public class RoleDAO {
         {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String values="VALUES ";
+            String values=addOrgChartUnitsRoles;
+            values+="VALUES ";
             OrgChartDAO orgDAO=new OrgChartDAO();
             values+="("+orgDAO.getID(oc.getName())+", \'"+unit.getName()+"\', \'"+role.getName()+"\', "+role.getLevel()+");";
-            addOrgChartUnitsRoles+=values;
-            stmt.executeUpdate(addOrgChartUnitsRoles);
+            stmt.executeUpdate(values);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,10 +59,10 @@ public class RoleDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
 
-            String values="VALUES ";
+            String values=addRole;
+            values+="VALUES ";
             values+= "(\'"+role.getName()+"\', "+role.getLevel()+", "+role.getRolePriority()+");";
-            addRole+=values;
-            stmt.executeUpdate(addRole);
+            stmt.executeUpdate(values);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,11 +72,10 @@ public class RoleDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
+            String where=removeRole;
             removeRoleEmployee(role);
-            where="Name = \'"+role.getName()+"\';";
-            removeRole+=where;
-            stmt.executeUpdate(removeRole);
+            where+="Name = \'"+role.getName()+"\';";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,10 +85,9 @@ public class RoleDAO {
         try {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
-            String where;
-            where="RoleName = \'"+role.getName()+"\';";
-            removeRoleEmployee+=where;
-            stmt.executeUpdate(removeRoleEmployee);
+            String where=removeRoleEmployee;
+            where+="RoleName = \'"+role.getName()+"\';";
+            stmt.executeUpdate(where);
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             for(Employee emp:employees){
@@ -107,11 +105,10 @@ public class RoleDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             //UPDATE units\n"+"SET
-            changeName+="\'"+newName+"\'\n";
-            String where;
-            where="WHERE Name = \'"+oldRole.getName()+"\';";
-            changeName+=where;
-            stmt.executeUpdate(changeName);
+            String where=changeName;
+            where+="\'"+newName+"\'\n";
+            where+="WHERE Name = \'"+oldRole.getName()+"\';";
+            stmt.executeUpdate(where);
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
@@ -135,11 +132,10 @@ public class RoleDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             //UPDATE units\n"+"SET
-            changeLevel+=level+"\n";
-            String where;
-            where="WHERE Name = \'"+oldRole.getName()+"\';";
-            changeLevel+=where;
-            stmt.executeUpdate(changeLevel);
+            String where=changeLevel;
+            where+=level+"\n";
+            where+="WHERE Name = \'"+oldRole.getName()+"\';";
+            stmt.executeUpdate(where);
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
@@ -163,11 +159,10 @@ public class RoleDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             //UPDATE units\n"+"SET
-            changePriority+=priority+"\n";
-            String where;
-            where="WHERE Name = \'"+oldRole.getName()+"\';";
-            changePriority+=where;
-            stmt.executeUpdate(changePriority);
+            String where=changePriority;
+            where+=priority+"\n";
+            where+="WHERE Name = \'"+oldRole.getName()+"\';";
+            stmt.executeUpdate(where);
 
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());

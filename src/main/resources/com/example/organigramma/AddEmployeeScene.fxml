@@ -24,7 +24,7 @@
            </font>
        </TextField>
        <Button fx:id="AddEmployeeButton" layoutX="50.0" layoutY="116.0" mnemonicParsing="false" onAction="#AddEmplyee" text="AddEmployee" />
-      <Button fx:id="EndButton" layoutX="500.0" layoutY="342.0" mnemonicParsing="false" onAction="#EndAction" prefHeight="31.0" prefWidth="65.0" text="End">
+      <Button fx:id="NextRelationButton" layoutX="500.0" layoutY="342.0" mnemonicParsing="false" onAction="#NextRelation" prefHeight="31.0" prefWidth="65.0" text="Next">
          <font>
             <Font size="15.0" />
          </font>

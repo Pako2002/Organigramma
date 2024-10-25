@@ -1,6 +1,8 @@
 package com.example.organigramma.UserInterface;
 
 import com.example.organigramma.Composite.*;
+import com.example.organigramma.Singleton.*;
+import com.example.organigramma.DAO.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +18,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class Scene2Controller implements Initializable {
+public class Scene2Controller {
 
     //MainScene Section
     @FXML
@@ -41,26 +44,44 @@ public class Scene2Controller implements Initializable {
     //TextField Section
     @FXML
     private TextField OrgName;
+    //units
     @FXML
     private TextField UnitName;
     @FXML
     private TextField UnitLevel;
     @FXML
+    private TextField RootUnitName;
+    @FXML
     private TextField SubUnitName;
     @FXML
     private TextField SubUnitLevel;
     @FXML
+    private Label UnitListLabel;
+    //emploees
+    @FXML
     private TextField EmployeeID;
     @FXML
     private TextField EmployeeName;
-    @FXML
-    private TextField EmployeeRole;
+    //roles
     @FXML
     private TextField RoleName;
     @FXML
     private TextField RoleLevel;
     @FXML
     private TextField RolePriority;
+    //relation
+    @FXML
+    private TextField EmpRelationTF;
+    @FXML
+    private TextField UnitRelationTF;
+    @FXML
+    private TextField RoleRelationTF;
+    @FXML
+    private Label EmpRelList;
+    @FXML
+    private Label UnitRelList;
+    @FXML
+    private Label RoleRelList;
     //Button Section
     @FXML
     private Button NextUnitButton;
@@ -74,12 +95,11 @@ public class Scene2Controller implements Initializable {
     private Button AddSubUnitButton;
     @FXML
     private Button AddEmployeeButton;
+    @FXML
+    private Button AddRelationButton;
     //Organigram Area Section
     @FXML
-    private Pane orgChartPane;
-    @FXML
-    private ChoiceBox<String> parentChoiceBox;
-    private List<String> unitNameList;
+    private Pane OrgChartPane;
 
     //Variables Section
     private User user;
@@ -134,6 +154,7 @@ public class Scene2Controller implements Initializable {
         controller.setOrgChart(orgChart);
         controller.setUser(USER_NAME,PASSWORD);
         //System.out.println(user.getName());
+        OrgChartDAO.addOrgChart(orgChart);  //aggiungo al database
 
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);
@@ -146,52 +167,63 @@ public class Scene2Controller implements Initializable {
 
     //NewOrg Section (UnitScene Section)
     public void AddUnit(ActionEvent actionEvent) {
-        //attento stai dando la possibilità all'utente di creare più root unit
+        //non stai dando la possibilità all'utente di creare più root unit
         String unitName = UnitName.getText();
         int unitLevel = Integer.parseInt(UnitLevel.getText());
         unit= new CompoundUnit(unitName, unitLevel);
-        unitNameList.add(unit.getName());
+        UnitDAO.addUnit(unit);
+        UnitList.getInstance().add(unit.getName());
+        UnitListLabel.setText(UnitList.getInstance().toString());
+        System.out.println(UnitList.getInstance().getUnitsNames().getFirst());
         unclickable=true;
         AddUnitButton.setDisable(unclickable);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (parentChoiceBox != null) {
-            parentChoiceBox.getItems().addAll(unitNameList);
-            parentChoiceBox.setOnAction(this::AddSubUnit); //l'operatore "::" è un method reference operator
-        } else {
-            System.out.println("parentChoiceBox is null");
-        }
-    }
-
     public void AddSubUnit(ActionEvent actionEvent) {
+        String rootUnit = RootUnitName.getText();
         String subUnitName = SubUnitName.getText();
         int subUnitLevel = Integer.parseInt(SubUnitLevel.getText());
 
         CompoundUnit subUnit= new CompoundUnit(subUnitName, subUnitLevel);
-        unitNameList.add(subUnit.getName());
+
         //In base alla scelta dell'utente aggiungeremo un unità come sotto-unità di un'altra specificata da lui
-        if(parentChoiceBox.getValue().equals(unit.getName())){
-            unit.addSubUnit(subUnit);
+        if(rootUnit.equals(unit.getName())){
+            try{
+                UnitDAO.addUnit(subUnit);
+                unit.addSubUnit(subUnit);
+                UnitList.getInstance().add(subUnit.getName());
+                UnitListLabel.setText(UnitList.getInstance().toString());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
         else{
-            setParent(unit.getSubUnits(),subUnit,0).addSubUnit(subUnit);
+            try{
+                setParent(unit.getSubUnits(),subUnit,rootUnit,0).addSubUnit(subUnit);
+                UnitList.getInstance().add(subUnit.getName());
+                UnitListLabel.setText(UnitList.getInstance().toString());
+                UnitDAO.addUnit(subUnit);
+            } catch (Exception e) {
+                e.printStackTrace();
+                UnitListLabel.setText("Errore nell'inserimento dell'unità");
+                UnitListLabel.setStyle("-fx-text-fill: red;");
+            }
         }
-
         SubUnitName.clear();
         SubUnitLevel.clear();
+
     }
-    private CompoundUnit setParent(List<CompoundUnit> units, CompoundUnit subUnit, int i){
+    private CompoundUnit setParent(List<CompoundUnit> units, CompoundUnit subUnit,String rootUnit, int i){
         if(i>=units.size())
             return null;
-        if(units.get(i).getName().equals(parentChoiceBox.getValue())){
+        if(units.get(i).getName().equals(rootUnit)){
             return units.get(i);
         }
         if(units.get(i).hasSubUnit()){
-            setParent(units.get(i).getSubUnits(),subUnit,0);
+            setParent(units.get(i).getSubUnits(),subUnit,rootUnit,0);
         }
-        return setParent(units,subUnit,i+1);
+        return setParent(units,subUnit,rootUnit,i+1);
     }
     public void NextRole(ActionEvent event) throws IOException, SQLException {  //Questo pulsante porta alla sezione per inserire i ruoli
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddRoleScene.fxml"));
@@ -218,6 +250,8 @@ public class Scene2Controller implements Initializable {
         int rolePriority = Integer.parseInt(RolePriority.getText());
 
         Role role= new Role(roleName, roleLevel, rolePriority);
+        RoleList.getInstance().add(role.getName());
+        RoleDAO.addRole(role);
         roles.add(new Role(roleName, roleLevel, rolePriority));
 
         RoleName.clear();
@@ -253,9 +287,37 @@ public class Scene2Controller implements Initializable {
         String employeeName = EmployeeName.getText();
 
         Employee emp= new Employee(employeeID,employeeName,orgChart);
+        EmployeeList.getInstance().add(emp.getName());
+        EmployeeDAO.addEmployee(emp);
         employees.add(emp);
+        EmployeeID.clear();
+        EmployeeName.clear();
 
         //System.out.println(employeeName);
+    }
+    public void NextRelation(ActionEvent event) throws IOException {    //Questo bottone porta alla sezione per inserire le relazioni
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddRelationScene.fxml"));
+        root = loader.load();
+        Scene2Controller controller = loader.getController();
+        controller.setEmployees(employees);
+        controller.setRoles(roles);
+        controller.setUnit(unit);
+        controller.setOrgChart(orgChart);
+        controller.setUser(USER_NAME,PASSWORD);
+        controller.displayName(USER_NAME,PASSWORD);
+
+        EmpRelList.setText(EmployeeList.getInstance().toString());
+        UnitRelList.setText(UnitList.getInstance().toString());
+        RoleRelList.setText(RoleList.getInstance().toString());
+
+        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+        scene=new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void AddRelation(ActionEvent actionEvent) {
+
     }
 
     public void EndAction(ActionEvent event) throws IOException, SQLException {
