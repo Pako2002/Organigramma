@@ -14,7 +14,7 @@ public class UnitDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
-    private static final String allUnits= "SELECT * FROM units";
+    private static final String allUnits= "SELECT * FROM units\n";
     private static final String addUnit= "INSERT INTO units (Name, Level)\n";
     private static final String removeUnit="DELETE FROM units WHERE ";
     private static final String removeUnitRole= "DELETE FROM employeeroles WHERE ";
@@ -85,7 +85,7 @@ public class UnitDAO {
             //UPDATE units\n"+"SET
             String where=changeName;
             where+="\'"+newName+"\'\n";
-            where="WHERE Name = \'"+oldUnit.getName()+"\';";
+            where+="WHERE Name = \'"+oldUnit.getName()+"\';";
             stmt.executeUpdate(where);
 
             List<Employee> employees = new ArrayList<>();
@@ -114,13 +114,30 @@ public class UnitDAO {
             removeUnitRole(unit);
             String where=changeLevel;
             where+=newLevel+"\n";
-            where="WHERE Name = \'"+unit.getName()+"\';";
+            where+="WHERE Name = \'"+unit.getName()+"\';";
             stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    public static Unit getUnit(String unitName){
+        Unit unit=null;
+        try {
+            Connection con= DriverManager.getConnection(url, user, password);
+            Statement stmt= con.createStatement();
+            String where=allUnits;
+            where+="WHERE Name = \'"+unitName+"\';";
+            ResultSet rs= stmt.executeQuery(where);
+            rs.next();//
+            unit = new CompoundUnit(rs.getString("Name"), rs.getInt("Level"));
+            System.out.println(where);
+            System.out.println(unit.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return unit;
+    }
     public static List<Unit> getAllUnit(){
         List<Unit> units= new ArrayList<>();
         try (

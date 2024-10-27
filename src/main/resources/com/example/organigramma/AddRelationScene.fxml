@@ -13,21 +13,21 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Label layoutX="14.0" layoutY="59.0" text="Employee" />
+      <TextField fx:id="EmpRelationTF" layoutX="80.0" layoutY="55.0" promptText="EmployeeName" />
       <Label layoutX="14.0" layoutY="91.0" text="Unit" />
       <TextField fx:id="UnitRelationTF" layoutX="80.0" layoutY="87.0" promptText="UnitName" />
       <Label layoutX="14.0" layoutY="124.0" text="Role" />
       <TextField fx:id="RoleRelationTF" layoutX="80.0" layoutY="120.0" promptText="RoleName" />
       <Button fx:id="AddRelationButton" layoutX="114.0" layoutY="154.0" mnemonicParsing="false" onAction="#AddRelation" text="AddRelation" />
-      <TextField fx:id="EmpRelationTF" layoutX="80.0" layoutY="55.0" promptText="EmployeeName" />
-      <Label layoutX="14.0" layoutY="59.0" text="Employee" />
       <Button fx:id="EndButton" layoutX="500.0" layoutY="342.0" mnemonicParsing="false" onAction="#EndAction" prefHeight="31.0" prefWidth="65.0" text="End">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Label fx:id="EmpRelList" alignment="TOP_LEFT" layoutX="247.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Label" />
-      <Label fx:id="UnitRelList" alignment="TOP_LEFT" layoutX="355.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Label" />
-      <Label fx:id="RoleRelList" alignment="TOP_LEFT" layoutX="463.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Label" />
-      <Label alignment="TOP_LEFT" layoutX="50.0" layoutY="200.0" prefHeight="134.0" prefWidth="197.0" />
+      <Label fx:id="EmpRelList" alignment="TOP_LEFT" layoutX="247.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Employees List:" />
+      <Label fx:id="UnitRelList" alignment="TOP_LEFT" layoutX="355.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Units List:" />
+      <Label fx:id="RoleRelList" alignment="TOP_LEFT" layoutX="463.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Roles List:" />
+      <Label fx:id="ErrorLabel" alignment="TOP_LEFT" layoutX="50.0" layoutY="200.0" prefHeight="134.0" prefWidth="197.0" />
    </children>
 </AnchorPane>

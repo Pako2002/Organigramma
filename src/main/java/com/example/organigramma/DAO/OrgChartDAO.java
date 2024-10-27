@@ -102,8 +102,9 @@ public class OrgChartDAO {
             where=oneChart+"WHERE OrgChartID = "+id+";";
             ResultSet rs= stmt.executeQuery(where);
             UserDAO userDAO = new UserDAO();
-            User us= userDAO.getUser(rs.getString("UserName"));
-            res= new OrgChart(rs.getString("OrgCharName"), us);
+            rs.next();
+            User us= userDAO.getUser(rs.getInt("UserID"));
+            res= new OrgChart(rs.getString("OrgChartName"), us);
         } catch (SQLException e) {
             e.printStackTrace();
         }

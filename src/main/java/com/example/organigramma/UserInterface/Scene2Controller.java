@@ -82,6 +82,8 @@ public class Scene2Controller {
     private Label UnitRelList;
     @FXML
     private Label RoleRelList;
+    @FXML
+    private Label ErrorLabel;
     //Button Section
     @FXML
     private Button NextUnitButton;
@@ -288,6 +290,7 @@ public class Scene2Controller {
 
         Employee emp= new Employee(employeeID,employeeName,orgChart);
         EmployeeList.getInstance().add(emp.getName());
+        System.out.println(EmployeeList.getInstance().toString());
         EmployeeDAO.addEmployee(emp);
         employees.add(emp);
         EmployeeID.clear();
@@ -304,11 +307,10 @@ public class Scene2Controller {
         controller.setUnit(unit);
         controller.setOrgChart(orgChart);
         controller.setUser(USER_NAME,PASSWORD);
-        controller.displayName(USER_NAME,PASSWORD);
 
-        EmpRelList.setText(EmployeeList.getInstance().toString());
-        UnitRelList.setText(UnitList.getInstance().toString());
-        RoleRelList.setText(RoleList.getInstance().toString());
+        controller.EmpRelList.setText(EmployeeList.getInstance().toString());
+        controller.UnitRelList.setText(UnitList.getInstance().toString());
+        controller.RoleRelList.setText(RoleList.getInstance().toString());
 
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);
@@ -317,7 +319,26 @@ public class Scene2Controller {
     }
 
     public void AddRelation(ActionEvent actionEvent) {
+        String empName= EmpRelationTF.getText();
+        String unitName= UnitRelationTF.getText();
+        String roleName= RoleRelationTF.getText();
 
+        Employee emp= EmployeeDAO.getEmployee(empName);
+        Unit unit= UnitDAO.getUnit(unitName);
+        Role role= RoleDAO.getRole(roleName);
+        if(unit.getLevel()==role.getLevel()){
+            EmployeeDAO.addEmployeeRole(emp,unit,role);
+            RoleDAO.addOrgChartUnitsRoles(orgChart,unit,role);
+            ErrorLabel.setText("Everything ok");
+            ErrorLabel.setStyle("-fx-text-fill: green;");
+        }
+        else{
+            ErrorLabel.setText("The role must be at the same level as the unit");
+            ErrorLabel.setStyle("-fx-text-fill: red;");
+        }
+        EmpRelationTF.clear();
+        UnitRelationTF.clear();
+        RoleRelationTF.clear();
     }
 
     public void EndAction(ActionEvent event) throws IOException, SQLException {

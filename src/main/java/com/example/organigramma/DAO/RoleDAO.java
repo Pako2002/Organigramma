@@ -189,8 +189,9 @@ public class RoleDAO {
         )
         {
             String where;
-            where=oneRole+"WHERE Name = "+roleName+";";
+            where=oneRole+"WHERE Name = \'"+roleName+"\';";
             ResultSet rs= stmt.executeQuery(where);
+            rs.next();
             ris= new Role(rs.getString("Name"), rs.getInt("Level"), rs.getInt("Priority"));
         } catch (SQLException e) {
             e.printStackTrace();

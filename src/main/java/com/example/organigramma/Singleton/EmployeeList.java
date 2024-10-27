@@ -33,7 +33,7 @@ public class EmployeeList {
     public String getName(int index) {
         return emplyeeName.get(index);
     }
-    public List<String> getUnitsNames() {
+    public List<String> getEmployeesNames() {
         return emplyeeName;
     }
     public String[] convert() {

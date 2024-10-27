@@ -110,6 +110,23 @@ public class UserDAO {
         }
         return res;
     }
+    public static User getUser(int id){
+        User res=null;
+        try (
+                Connection con= DriverManager.getConnection(url, user, password);
+                Statement stmt= con.createStatement();
+        )
+        {
+            String where=oneUser;
+            where+="WHERE UserID = \'"+id+"\';";
+            ResultSet rs= stmt.executeQuery(where);
+            rs.next();
+            res= new User(rs.getString("UserName"), rs.getString("Password"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
     public static List<User> getAllUser(){
         List<User> users= new ArrayList<>();
         try (

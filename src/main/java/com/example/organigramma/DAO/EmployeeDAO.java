@@ -16,7 +16,7 @@ public class EmployeeDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
-    private static final String allEmployees= "SELECT * FROM employees";
+    private static final String allEmployees= "SELECT * FROM employees\n";
     private static final String addEmployee= "INSERT INTO employees (ID, Name, OrgChartID)\n";
     private static final String addEmployeeRole= "INSERT INTO employeeroles (EmployeeID, UnitName, RoleName)\n";
     private static final String removeEmployee="DELETE FROM employees WHERE ";
@@ -36,6 +36,23 @@ public class EmployeeDAO {
         return istance;
     }
 
+    public static Employee getEmployee(String empName){
+        Employee employees=null;
+        try {
+            Connection con= DriverManager.getConnection(url, user, password);
+            Statement stmt= con.createStatement();
+            String where=allEmployees;
+            where+="WHERE Name = \'"+empName+"\';";
+            ResultSet rs= stmt.executeQuery(where);
+            rs.next();//
+            OrgChartDAO orgChartDAO= new OrgChartDAO();
+            OrgChart oc= orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
+            employees = new Employee(rs.getInt("ID"), rs.getString("Name"),oc);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employees;
+    }
     //ADDING
     /*
     public static void addEmployee(Employee employee) {
