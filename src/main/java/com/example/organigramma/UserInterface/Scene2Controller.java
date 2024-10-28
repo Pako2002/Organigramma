@@ -11,8 +11,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -355,6 +360,10 @@ public class Scene2Controller {
         controller.setUser(USER_NAME,PASSWORD);
         controller.displayName(USER_NAME,PASSWORD);
 
+        if(unit!=null){
+            drawOrgChart(controller, unit, 216, 25);
+        }
+
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);
         stage.setScene(scene);
@@ -362,6 +371,78 @@ public class Scene2Controller {
     }
     public void setEmployees(List<Employee> employees){
         this.employees=employees;
+    }
+    // Disegna l'organigramma a partire dall'unità radice
+    private void drawOrgChart(Scene2Controller controller, CompoundUnit unit, double x, double y) {
+        Rectangle rect = new Rectangle(120, 30);
+        rect.setFill(Color.LIGHTBLUE);
+        rect.setStroke(Color.BLACK);
+
+        Label unitLabel = new Label(unit.getName());
+        StackPane unitBox = new StackPane();
+        unitBox.getChildren().addAll(rect, unitLabel);
+        unitBox.setLayoutX(x - rect.getWidth() / 2);
+        unitBox.setLayoutY(y);
+
+        controller.OrgChartPane.getChildren().add(unitBox);
+
+        // Evento di clic per mostrare i dettagli dell'unità
+        unitBox.setOnMouseClicked((MouseEvent event) -> {
+            showUnitDetails(unit);
+        });
+
+        double childY = y + 100; // Posizionamento verticale delle sottounità
+        double childXStart = x - (unit.getSubUnits().size() * 150) / 2; // Posizionamento orizzontale iniziale
+
+        drawChild(controller,unit.getSubUnits(),x,y,rect,childY,childXStart,0);
+    }
+    private void drawChild(Scene2Controller controller, List<CompoundUnit> units,double x, double y, Rectangle rect, double childY,double childXStart, int i){
+        if(i>=units.size()){
+            return;
+        }
+        CompoundUnit child=units.get(i);
+        Line line = new Line(x, y + rect.getHeight(), childXStart + 100, childY);
+        controller.OrgChartPane.getChildren().add(line);
+
+        rect = new Rectangle(120, 30);
+        rect.setFill(Color.LIGHTBLUE);
+        rect.setStroke(Color.BLACK);
+
+        Label unitLabel = new Label(child.getName());
+        StackPane unitBox = new StackPane();
+        unitBox.getChildren().addAll(rect, unitLabel);
+        unitBox.setLayoutX(x - rect.getWidth() / 2);
+        unitBox.setLayoutY(y);
+
+        controller.OrgChartPane.getChildren().add(unitBox);
+
+        // Evento di clic per mostrare i dettagli dell'unità
+        unitBox.setOnMouseClicked((MouseEvent event) -> {
+            showUnitDetails(child);
+        });
+        //drawOrgChart(controller, child, childXStart + 100, childY);
+
+        if(!(child.getSubUnits().isEmpty())){
+            drawChild(controller,child.getSubUnits(), x, y, rect, childY, childXStart, 0);
+        }
+        childXStart += 150;
+        drawChild(controller, units, x, y, rect, childY, childXStart, i+1);
+    }
+    // Mostra i dettagli dell'unità in un popup
+    private void showUnitDetails(CompoundUnit unit) {
+        StringBuilder details = new StringBuilder("Dettagli Unità: " + unit.getName() + "\n");
+        details.append("Livello: " + unit.getLevel() + "\n");
+        details.append("Sottounità:\n");
+
+        for (CompoundUnit child : unit.getSubUnits()) {
+            details.append("- " + child.getName() + "\n");
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Dettagli Unità");
+        alert.setHeaderText("Informazioni sull'unità: " + unit.getName());
+        alert.setContentText(details.toString());
+        alert.showAndWait();
     }
     //NewOrg Section End
 
