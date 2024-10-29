@@ -396,37 +396,22 @@ public class Scene2Controller {
 
         drawChild(controller,unit.getSubUnits(),x,y,rect,childY,childXStart,0);
     }
-    private void drawChild(Scene2Controller controller, List<CompoundUnit> units,double x, double y, Rectangle rect, double childY,double childXStart, int i){
-        if(i>=units.size()){
+    private void drawChild(Scene2Controller controller, List<CompoundUnit> units, double x, double y, Rectangle rect, double childY, double childXStart, int i) {
+        if (i >= units.size()) {
             return;
         }
-        CompoundUnit child=units.get(i);
+
+        CompoundUnit child = units.get(i);
         Line line = new Line(x, y + rect.getHeight(), childXStart + 100, childY);
         controller.OrgChartPane.getChildren().add(line);
 
-        rect = new Rectangle(120, 30);
-        rect.setFill(Color.LIGHTBLUE);
-        rect.setStroke(Color.BLACK);
+        drawOrgChart(controller, child, childXStart + 100, childY);
 
-        Label unitLabel = new Label(child.getName());
-        StackPane unitBox = new StackPane();
-        unitBox.getChildren().addAll(rect, unitLabel);
-        unitBox.setLayoutX(x - rect.getWidth() / 2);
-        unitBox.setLayoutY(y);
-
-        controller.OrgChartPane.getChildren().add(unitBox);
-
-        // Evento di clic per mostrare i dettagli dell'unità
-        unitBox.setOnMouseClicked((MouseEvent event) -> {
-            showUnitDetails(child);
-        });
-        //drawOrgChart(controller, child, childXStart + 100, childY);
-
-        if(!(child.getSubUnits().isEmpty())){
-            drawChild(controller,child.getSubUnits(), x, y, rect, childY, childXStart, 0);
-        }
+        // Incrementa childXStart dopo aver disegnato il child, per posizionare i successivi
         childXStart += 150;
-        drawChild(controller, units, x, y, rect, childY, childXStart, i+1);
+
+        // Richiama la funzione ricorsiva per disegnare il prossimo child
+        drawChild(controller, units, x, y, rect, childY, childXStart, i + 1);
     }
     // Mostra i dettagli dell'unità in un popup
     private void showUnitDetails(CompoundUnit unit) {
