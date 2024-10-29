@@ -21,6 +21,7 @@ public class RoleDAO {
     private static final String allRoles= "SELECT * FROM roles";
     private static final String addRole= "INSERT INTO roles (Name, Level, Priority)\n";
     private static final String addOrgChartUnitsRoles= "INSERT INTO orgchartunitsroles (OrgChartID, UnitName, RoleName, Level)\n";
+    private static final String removeOrgChartUnitsRoles= "DELETE FROM orgchartunitsroles WHERE \n";
     private static final String removeRole="DELETE FROM roles WHERE ";
     private static final String removeRoleEmployee= "DELETE FROM employeeroles WHERE ";
     private static final String changeName= "UPDATE roles\n"+"SET Name = ";
@@ -48,6 +49,19 @@ public class RoleDAO {
             values+="("+orgDAO.getID(oc.getName())+", \'"+unit.getName()+"\', \'"+role.getName()+"\', "+role.getLevel()+");";
             stmt.executeUpdate(values);
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeOrgChartUnitsRoles(Role role){
+        try
+        {
+            Connection con= DriverManager.getConnection(url, user, password);
+            Statement stmt= con.createStatement();
+            String where=removeOrgChartUnitsRoles;
+            where+="Name = \'"+role.getName()+"\';";
+            stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
         }

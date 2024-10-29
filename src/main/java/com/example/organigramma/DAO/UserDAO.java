@@ -104,6 +104,7 @@ public class UserDAO {
             String where=oneUser;
             where+="WHERE UserName = \'"+username+"\';";
             ResultSet rs= stmt.executeQuery(where);
+            rs.next();
             res= new User(rs.getString("UserName"), rs.getString("Password"));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,6 +123,23 @@ public class UserDAO {
             ResultSet rs= stmt.executeQuery(where);
             rs.next();
             res= new User(rs.getString("UserName"), rs.getString("Password"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+    public static String getPassword(String username){
+        String res=null;
+        try (
+                Connection con= DriverManager.getConnection(url, user, password);
+                Statement stmt= con.createStatement();
+        )
+        {
+            String where=oneUser;
+            where+="WHERE UserName = \'"+username+"\';";
+            ResultSet rs= stmt.executeQuery(where);
+            rs.next();
+            res= rs.getString("Password");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -27,12 +27,14 @@ public class HelloController {
     private TextField passwordTextField;
     @FXML
     private Button loginButton;
+    @FXML
+    private Button SigninButton;
 
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    public void login(ActionEvent event) throws IOException, SQLException {
+    public void login(ActionEvent event) throws IOException {
         String username = nameTextField.getText();
         String password = passwordTextField.getText();
 
@@ -52,6 +54,34 @@ public class HelloController {
         stage.show();
 
         */
+        if(UserDAO.getUser(username)!=null && UserDAO.getPassword(username).equals(password)){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
+            root = loader.load();
+            Scene2Controller scene2controller = loader.getController();
+            scene2controller.displayName(username,password);
+            //root=  FXMLLoader.load(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
+            stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+            scene=new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else{
+            Alert alert= new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Wrong credentials!");
+            alert.setContentText("Try to signin or using the right credentials");
+            if(alert.showAndWait().get()== ButtonType.OK) {
+                //e.printStackTrace();
+                nameTextField.clear();
+                passwordTextField.clear();
+            }
+        }
+
+    }
+
+    public void signin(ActionEvent event) throws IOException {
+        String username = nameTextField.getText();
+        String password = passwordTextField.getText();
 
         try{
             User user= new User(username, password);
@@ -66,11 +96,11 @@ public class HelloController {
             scene=new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             Alert alert= new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("This user already exist!");
-            System.out.println("cacata nel puzzo");
+            alert.setContentText("Try to login or using another username");
             if(alert.showAndWait().get()== ButtonType.OK){
                 //e.printStackTrace();
                 nameTextField.clear();

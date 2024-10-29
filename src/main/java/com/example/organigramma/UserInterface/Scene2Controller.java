@@ -447,6 +447,28 @@ public class Scene2Controller {
         }
     }
 
+    public void deleteAccount(ActionEvent event) {
+        Alert alert= new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Account");
+        alert.setHeaderText("You're about to delete your account!\n");
+        alert.setContentText("Everything you have created will be lost");
+
+        if(alert.showAndWait().get()== ButtonType.OK){
+            for(Employee emp:employees){
+                EmployeeDAO.removeEmployeeRole(emp);
+                EmployeeDAO.removeEmployee(emp);
+            }
+            for(Role role:roles){
+                RoleDAO.removeOrgChartUnitsRoles(role);
+                RoleDAO.removeRole(role);
+            }
+
+            stage=(Stage) scenePane.getScene().getWindow();
+            stage.close();
+        }
+    }
+
+
     private void test(){
         System.out.println(orgChart.getName());
         unit.showDetails();

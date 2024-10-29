@@ -34,7 +34,7 @@
             <Menu mnemonicParsing="false" text="User">
               <items>
                 <MenuItem mnemonicParsing="false" text="Info" />
-                  <MenuItem mnemonicParsing="false" text="DeleteAccount" />
+                  <MenuItem mnemonicParsing="false" onAction="#deleteAccount" text="DeleteAccount" />
               </items>
             </Menu>
         </menus>
