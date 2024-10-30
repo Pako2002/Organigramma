@@ -206,17 +206,16 @@ public class EmployeeDAO {
         }
     }
 
-    public static List<Employee> getAllEmployees(){
+    public static List<Employee> getAllEmployees(OrgChart oc){
         List<Employee> employees= new ArrayList<>();
-        try (
-                Connection con= DriverManager.getConnection(url, user, password);
-                Statement stmt= con.createStatement();
-                ResultSet rs= stmt.executeQuery(allEmployees)
-        )
+        try
         {
+            Connection con= DriverManager.getConnection(url, user, password);
+            Statement stmt= con.createStatement();
+            String where=allEmployees;
+            where+="WHERE OrgChartID = \'"+OrgChartDAO.getID(oc.getName())+"\';";
+            ResultSet rs= stmt.executeQuery(where);
             while (rs.next()){
-                OrgChartDAO orgChartDAO= new OrgChartDAO();
-                OrgChart oc= orgChartDAO.getOrgChart(rs.getLong("OrgChartID"));
                 Employee emp = new Employee(rs.getInt("ID"), rs.getString("Name"),oc);
                 employees.add(emp);
             }

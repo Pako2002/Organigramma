@@ -67,12 +67,15 @@ public class UnitDAO {
             String where=removeUnitRole;
             where+="UnitName = \'"+unit.getName()+"\';";
             stmt.executeUpdate(where);
+            /*
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             for(Employee emp:employees){
                 if(emp.roles.containsKey(unit))
                     emp.roles.remove(unit);
             }
+
+             */
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -88,6 +91,7 @@ public class UnitDAO {
             where+="WHERE Name = \'"+oldUnit.getName()+"\';";
             stmt.executeUpdate(where);
 
+            /*
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             Unit newUnit= new  CompoundUnit(newName, oldUnit.getLevel());
@@ -99,6 +103,7 @@ public class UnitDAO {
                     emp.roles.remove(oldUnit);
                 }
             }
+             */
 
         } catch (SQLException e) {
             e.printStackTrace();

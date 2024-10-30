@@ -59,6 +59,7 @@ public class HelloController {
             root = loader.load();
             Scene2Controller scene2controller = loader.getController();
             scene2controller.displayName(username,password);
+            scene2controller.setUser(username,password);
             //root=  FXMLLoader.load(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
             stage=(Stage)((Node)event.getSource()).getScene().getWindow();
             scene=new Scene(root);
@@ -91,6 +92,7 @@ public class HelloController {
             root = loader.load();
             Scene2Controller scene2controller = loader.getController();
             scene2controller.displayName(username,password);
+            scene2controller.setUser(username,password);
             //root=  FXMLLoader.load(getClass().getResource("/com/example/organigramma/Scene2.fxml"));
             stage=(Stage)((Node)event.getSource()).getScene().getWindow();
             scene=new Scene(root);

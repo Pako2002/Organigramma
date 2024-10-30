@@ -451,23 +451,36 @@ public class Scene2Controller {
         Alert alert= new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Account");
         alert.setHeaderText("You're about to delete your account!\n");
-        alert.setContentText("Everything you have created will be lost");
+        alert.setContentText("Everything you have created will be lost and the application will close");
 
         if(alert.showAndWait().get()== ButtonType.OK){
+            List<OrgChart> orgCharts= OrgChartDAO.getAllOrgChart(UserDAO.getID(user.getName()));
+            List<Unit> units= new LinkedList<>();
+            List<Role> roles= new LinkedList<>();
+            List<Employee> employees= new LinkedList<>();
+            for(OrgChart orgChart : orgCharts){
+                units.addAll(OrgChartDAO.getUnitsFromOUR(orgChart));
+                roles.addAll(OrgChartDAO.getRolesFromOUR(orgChart));
+                employees.addAll(EmployeeDAO.getAllEmployees(orgChart));
+                OrgChartDAO.removeOUR(orgChart);
+                OrgChartDAO.removeOrgChart(orgChart);
+            }
             for(Employee emp:employees){
                 EmployeeDAO.removeEmployeeRole(emp);
                 EmployeeDAO.removeEmployee(emp);
             }
-            for(Role role:roles){
-                RoleDAO.removeOrgChartUnitsRoles(role);
+            for(Role role : roles) {
                 RoleDAO.removeRole(role);
             }
+            for(Unit unit : units) {
+                UnitDAO.removeUnit(unit);
+            }
+            UserDAO.removeUser(user);
 
             stage=(Stage) scenePane.getScene().getWindow();
             stage.close();
         }
     }
-
 
     private void test(){
         System.out.println(orgChart.getName());

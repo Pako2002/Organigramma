@@ -60,7 +60,7 @@ public class RoleDAO {
             Connection con= DriverManager.getConnection(url, user, password);
             Statement stmt= con.createStatement();
             String where=removeOrgChartUnitsRoles;
-            where+="Name = \'"+role.getName()+"\';";
+            where+="RoleName = \'"+role.getName()+"\';";
             stmt.executeUpdate(where);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,6 +102,7 @@ public class RoleDAO {
             String where=removeRoleEmployee;
             where+="RoleName = \'"+role.getName()+"\';";
             stmt.executeUpdate(where);
+            /*
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             for(Employee emp:employees){
@@ -109,6 +110,7 @@ public class RoleDAO {
                     emp.roles.remove(emp.getUnit(role));
                 }
             }
+            */
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -123,7 +125,7 @@ public class RoleDAO {
             where+="\'"+newName+"\'\n";
             where+="WHERE Name = \'"+oldRole.getName()+"\';";
             stmt.executeUpdate(where);
-
+            /*
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             Role newRole= new Role(newName, oldRole.getLevel(), oldRole.getRolePriority());
@@ -135,6 +137,7 @@ public class RoleDAO {
                     emp.assignRole(unit, newRole);
                 }
             }
+             */
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,6 +154,7 @@ public class RoleDAO {
             where+="WHERE Name = \'"+oldRole.getName()+"\';";
             stmt.executeUpdate(where);
 
+            /*
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             Role newRole= new Role(oldRole.getName(), level, oldRole.getRolePriority());
@@ -162,6 +166,7 @@ public class RoleDAO {
                     emp.assignRole(unit, newRole);
                 }
             }
+             */
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,7 +182,7 @@ public class RoleDAO {
             where+=priority+"\n";
             where+="WHERE Name = \'"+oldRole.getName()+"\';";
             stmt.executeUpdate(where);
-
+            /*
             List<Employee> employees = new ArrayList<>();
             employees.addAll(EmployeeDAO.getAllEmployees());
             Role newRole= new Role(oldRole.getName(), oldRole.getLevel(), priority);
@@ -189,6 +194,7 @@ public class RoleDAO {
                     emp.assignRole(unit, newRole);
                 }
             }
+             */
 
         } catch (SQLException e) {
             e.printStackTrace();
