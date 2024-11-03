@@ -38,5 +38,6 @@
                 <Font size="15.0" />
             </font>
         </Button>
+      <Label fx:id="RoleLabel" alignment="TOP_LEFT" layoutX="300.0" layoutY="44.0" prefHeight="104.0" prefWidth="300.0" />
     </children>
 </AnchorPane>

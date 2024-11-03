@@ -28,6 +28,6 @@
       <Label fx:id="EmpRelList" alignment="TOP_LEFT" layoutX="247.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Employees List:" />
       <Label fx:id="UnitRelList" alignment="TOP_LEFT" layoutX="355.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Units List:" />
       <Label fx:id="RoleRelList" alignment="TOP_LEFT" layoutX="463.0" layoutY="55.0" prefHeight="279.0" prefWidth="108.0" style="-fx-border-color: black;" text="Roles List:" />
-      <Label fx:id="ErrorLabel" alignment="TOP_LEFT" layoutX="50.0" layoutY="200.0" prefHeight="134.0" prefWidth="197.0" />
+      <Label fx:id="RelationLabel" alignment="TOP_LEFT" layoutX="50.0" layoutY="200.0" prefHeight="134.0" prefWidth="197.0" />
    </children>
 </AnchorPane>

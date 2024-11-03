@@ -6,7 +6,6 @@ import com.example.organigramma.DAO.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,12 +20,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class Scene2Controller {
 
@@ -49,6 +45,7 @@ public class Scene2Controller {
     //TextField Section
     @FXML
     private TextField OrgName;
+    private Label OrgLabel;
     //units
     @FXML
     private TextField UnitName;
@@ -67,6 +64,8 @@ public class Scene2Controller {
     private TextField EmployeeID;
     @FXML
     private TextField EmployeeName;
+    @FXML
+    private Label EmployeeLabel;
     //roles
     @FXML
     private TextField RoleName;
@@ -74,6 +73,8 @@ public class Scene2Controller {
     private TextField RoleLevel;
     @FXML
     private TextField RolePriority;
+    @FXML
+    private Label RoleLabel;
     //relation
     @FXML
     private TextField EmpRelationTF;
@@ -88,7 +89,7 @@ public class Scene2Controller {
     @FXML
     private Label RoleRelList;
     @FXML
-    private Label ErrorLabel;
+    private Label RelationLabel;
     //Button Section
     @FXML
     private Button NextUnitButton;
@@ -149,24 +150,27 @@ public class Scene2Controller {
         user=new User(USER_NAME,PASSWORD);
     }
 
-    public void NextUnit(ActionEvent event) throws IOException {    //Questo pulsante porta alla sezione per inserire le unità
+    public void NextUnit(ActionEvent event) {    //Questo pulsante porta alla sezione per inserire le unità
         String name = OrgName.getText();
         user = new User(USER_NAME, PASSWORD);
         orgChart= new OrgChart(name, user);
+        try{
+            OrgChartDAO.addOrgChart(orgChart);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddUnitScene.fxml"));
+            root = loader.load();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddUnitScene.fxml"));
-        root = loader.load();
+            Scene2Controller controller = loader.getController();
+            controller.setOrgChart(orgChart);
+            controller.setUser(USER_NAME,PASSWORD);
 
-        Scene2Controller controller = loader.getController();
-        controller.setOrgChart(orgChart);
-        controller.setUser(USER_NAME,PASSWORD);
-        //System.out.println(user.getName());
-        OrgChartDAO.addOrgChart(orgChart);  //aggiungo al database
-
-        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+            scene=new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e){
+            OrgLabel.setText("Errore nell'inserimento dell'Organigramma, ritenta");
+            OrgName.clear();
+        }
     }
     public void setOrgChart(OrgChart orgChart){
         this.orgChart=orgChart;
@@ -178,12 +182,19 @@ public class Scene2Controller {
         String unitName = UnitName.getText();
         int unitLevel = Integer.parseInt(UnitLevel.getText());
         unit= new CompoundUnit(unitName, unitLevel);
-        UnitDAO.addUnit(unit);
-        UnitList.getInstance().add(unit.getName());
-        UnitListLabel.setText(UnitList.getInstance().toString());
-        System.out.println(UnitList.getInstance().getUnitsNames().getFirst());
-        unclickable=true;
-        AddUnitButton.setDisable(unclickable);
+        try{
+            UnitDAO.addUnit(unit);
+            UnitList.getInstance().add(unit.getName());
+            UnitListLabel.setText(UnitList.getInstance().toString());
+            System.out.println(UnitList.getInstance().getUnitsNames().getFirst());
+            unclickable=true;
+            AddUnitButton.setDisable(unclickable);
+            UnitListLabel.setText("");
+            UnitListLabel.setStyle("-fx-text-fill: green;");
+        }catch(Exception e){
+            UnitListLabel.setText("Errore nell'inserimento del'unità");
+            UnitListLabel.setStyle("-fx-text-fill: red;");
+        }
     }
 
     public void AddSubUnit(ActionEvent actionEvent) {
@@ -199,21 +210,25 @@ public class Scene2Controller {
                 UnitDAO.addUnit(subUnit);
                 unit.addSubUnit(subUnit);
                 UnitList.getInstance().add(subUnit.getName());
+                UnitListLabel.setStyle("-fx-text-fill: green;");
                 UnitListLabel.setText(UnitList.getInstance().toString());
             }catch (Exception e){
                 e.printStackTrace();
+                UnitListLabel.setText("Errore nell'inserimento della sotto unità");
+                UnitListLabel.setStyle("-fx-text-fill: red;");
             }
 
         }
         else{
             try{
                 setParent(unit.getSubUnits(),subUnit,rootUnit,0).addSubUnit(subUnit);
-                UnitList.getInstance().add(subUnit.getName());
-                UnitListLabel.setText(UnitList.getInstance().toString());
                 UnitDAO.addUnit(subUnit);
+                UnitList.getInstance().add(subUnit.getName());
+                UnitListLabel.setStyle("-fx-text-fill: green;");
+                UnitListLabel.setText(UnitList.getInstance().toString());
             } catch (Exception e) {
                 e.printStackTrace();
-                UnitListLabel.setText("Errore nell'inserimento dell'unità");
+                UnitListLabel.setText("Errore nell'inserimento della sotto unità");
                 UnitListLabel.setStyle("-fx-text-fill: red;");
             }
         }
@@ -236,16 +251,22 @@ public class Scene2Controller {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddRoleScene.fxml"));
         root = loader.load();
 
-        Scene2Controller controller = loader.getController();
-        controller.setUnit(unit);
-        controller.setOrgChart(orgChart);
-        controller.setUser(USER_NAME,PASSWORD);
-        //System.out.println(unit.getName());
+        if(unit==null){
+            UnitListLabel.setText("Inserire almeno un unità");
+            UnitListLabel.setStyle("-fx-text-fill: orange;");
+        }
+        else{
+            Scene2Controller controller = loader.getController();
+            controller.setUnit(unit);
+            controller.setOrgChart(orgChart);
+            controller.setUser(USER_NAME,PASSWORD);
+            //System.out.println(unit.getName());
 
-        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+            scene=new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
     public void setUnit(CompoundUnit unit){
         this.unit=unit;
@@ -256,10 +277,17 @@ public class Scene2Controller {
         int roleLevel = Integer.parseInt(RoleLevel.getText());
         int rolePriority = Integer.parseInt(RolePriority.getText());
 
-        Role role= new Role(roleName, roleLevel, rolePriority);
-        RoleList.getInstance().add(role.getName());
-        RoleDAO.addRole(role);
-        roles.add(new Role(roleName, roleLevel, rolePriority));
+        try{
+            Role role= new Role(roleName, roleLevel, rolePriority);
+            RoleList.getInstance().add(role.getName());
+            RoleDAO.addRole(role);
+            roles.add(new Role(roleName, roleLevel, rolePriority));
+            RoleLabel.setText("Nessun Errore");
+            RoleLabel.setStyle("-fx-text-fill: green;");
+        }catch(Exception e){
+            RoleLabel.setText("Errore nell'inserimento del ruolo");
+            RoleLabel.setStyle("-fx-text-fill: red;");
+        }
 
         RoleName.clear();
         RoleLevel.clear();
@@ -270,20 +298,26 @@ public class Scene2Controller {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddEmployeeScene.fxml"));
         root = loader.load();
 
-        Scene2Controller controller = loader.getController();
-        controller.setRoles(roles);
-        controller.setUnit(unit);
-        controller.setOrgChart(orgChart);
-        controller.setUser(USER_NAME,PASSWORD);
-        //System.out.println(user.getName());
-        //System.out.println(orgChart.getName());
-        //System.out.println(unit.getName());
-        //System.out.println(roles.size());
+        if(roles.isEmpty()){
+            RoleLabel.setText("Inserire almeno un ruolo");
+            RoleLabel.setStyle("-fx-text-fill: orange;");
+        }
+        else{
+            Scene2Controller controller = loader.getController();
+            controller.setRoles(roles);
+            controller.setUnit(unit);
+            controller.setOrgChart(orgChart);
+            controller.setUser(USER_NAME,PASSWORD);
+            //System.out.println(user.getName());
+            //System.out.println(orgChart.getName());
+            //System.out.println(unit.getName());
+            //System.out.println(roles.size());
 
-        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+            scene=new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
     public void setRoles(List<Role> roles){
         this.roles=roles;
@@ -293,11 +327,18 @@ public class Scene2Controller {
         int employeeID = Integer.parseInt(EmployeeID.getText());
         String employeeName = EmployeeName.getText();
 
-        Employee emp= new Employee(employeeID,employeeName,orgChart);
-        EmployeeList.getInstance().add(emp.getName());
-        System.out.println(EmployeeList.getInstance().toString());
-        EmployeeDAO.addEmployee(emp);
-        employees.add(emp);
+        try{
+            Employee emp= new Employee(employeeID,employeeName,orgChart);
+            EmployeeList.getInstance().add(emp.getName());
+            System.out.println(EmployeeList.getInstance().toString());
+            EmployeeDAO.addEmployee(emp);
+            employees.add(emp);
+            EmployeeLabel.setText("Nessun Errore");
+            EmployeeLabel.setStyle("-fx-text-fill: green;");
+        } catch (RuntimeException e) {
+            EmployeeLabel.setText("Errore nell'inserimento del dipendente");
+            EmployeeLabel.setStyle("-fx-text-fill: red;");
+        }
         EmployeeID.clear();
         EmployeeName.clear();
 
@@ -306,21 +347,27 @@ public class Scene2Controller {
     public void NextRelation(ActionEvent event) throws IOException {    //Questo bottone porta alla sezione per inserire le relazioni
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddRelationScene.fxml"));
         root = loader.load();
-        Scene2Controller controller = loader.getController();
-        controller.setEmployees(employees);
-        controller.setRoles(roles);
-        controller.setUnit(unit);
-        controller.setOrgChart(orgChart);
-        controller.setUser(USER_NAME,PASSWORD);
+        if(employees.isEmpty()){
+            EmployeeLabel.setText("Inserire almeno un dipendente");
+            EmployeeLabel.setStyle("-fx-text-fill: orange;");
+        }
+        else{
+            Scene2Controller controller = loader.getController();
+            controller.setEmployees(employees);
+            controller.setRoles(roles);
+            controller.setUnit(unit);
+            controller.setOrgChart(orgChart);
+            controller.setUser(USER_NAME,PASSWORD);
 
-        controller.EmpRelList.setText(EmployeeList.getInstance().toString());
-        controller.UnitRelList.setText(UnitList.getInstance().toString());
-        controller.RoleRelList.setText(RoleList.getInstance().toString());
+            controller.EmpRelList.setText(EmployeeList.getInstance().toString());
+            controller.UnitRelList.setText(UnitList.getInstance().toString());
+            controller.RoleRelList.setText(RoleList.getInstance().toString());
 
-        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene=new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+            scene=new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     public void AddRelation(ActionEvent actionEvent) {
@@ -334,12 +381,12 @@ public class Scene2Controller {
         if(unit.getLevel()==role.getLevel()){
             EmployeeDAO.addEmployeeRole(emp,unit,role);
             RoleDAO.addOrgChartUnitsRoles(orgChart,unit,role);
-            ErrorLabel.setText("Everything ok");
-            ErrorLabel.setStyle("-fx-text-fill: green;");
+            RelationLabel.setText("Everything ok");
+            RelationLabel.setStyle("-fx-text-fill: green;");
         }
         else{
-            ErrorLabel.setText("The role must be at the same level as the unit");
-            ErrorLabel.setStyle("-fx-text-fill: red;");
+            RelationLabel.setText("The role must be at the same level as the unit");
+            RelationLabel.setStyle("-fx-text-fill: red;");
         }
         EmpRelationTF.clear();
         UnitRelationTF.clear();
@@ -463,7 +510,6 @@ public class Scene2Controller {
                 roles.addAll(OrgChartDAO.getRolesFromOUR(orgChart));
                 employees.addAll(EmployeeDAO.getAllEmployees(orgChart));
                 OrgChartDAO.removeOUR(orgChart);
-                OrgChartDAO.removeOrgChart(orgChart);
             }
             for(Employee emp:employees){
                 EmployeeDAO.removeEmployeeRole(emp);
@@ -474,6 +520,9 @@ public class Scene2Controller {
             }
             for(Unit unit : units) {
                 UnitDAO.removeUnit(unit);
+            }
+            for(OrgChart orgChart : orgCharts){
+                OrgChartDAO.removeOrgChart(orgChart);
             }
             UserDAO.removeUser(user);
 
