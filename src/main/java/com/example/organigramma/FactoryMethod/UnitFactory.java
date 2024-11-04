@@ -1,6 +1,5 @@
 package com.example.organigramma.FactoryMethod;
 
-import com.example.organigramma.Composite.OrgChart;
 import com.example.organigramma.Composite.Unit;
 
 public interface UnitFactory {

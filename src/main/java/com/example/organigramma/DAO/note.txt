@@ -1,3 +1,0 @@
-Vedi se puoi inserire una classe astratta per poter importare i metodi usati su tutti i DAO
-Sarebbe più ordinato e comprensibile
-vedi anche per le stringhe dei comandi sql

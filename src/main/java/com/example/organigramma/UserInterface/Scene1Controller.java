@@ -15,9 +15,8 @@ import com.example.organigramma.Composite.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
-public class HelloController {
+public class Scene1Controller {
 
     @FXML
     private AnchorPane loginPane;

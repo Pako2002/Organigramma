@@ -41,7 +41,4 @@ public class User {
             throw new RuntimeException(e);
         }
     }
-
-    //inserire main, poiché per completezza la classe user è il client dell'interfaccia composite
-    //e deve manipolare gli oggetti della composizione utilizzando l'interfaccia Unit
 }

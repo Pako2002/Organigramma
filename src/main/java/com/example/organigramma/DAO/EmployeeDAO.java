@@ -53,33 +53,7 @@ public class EmployeeDAO {
         }
         return employees;
     }
-    //ADDING
-    /*
-    public static void addEmployee(Employee employee) {
-        try {
-            Connection con = DriverManager.getConnection(url, user, password);
-            PreparedStatement stmt = con.prepareStatement(addEmployee);
 
-            // Imposta i parametri nella query
-            stmt.setLong(1, employee.getId());
-            stmt.setString(2, employee.getName());
-
-            // Esegue l'inserimento nella tabella employees
-            stmt.executeUpdate();
-
-            // Inserisce i ruoli dell'employee nella tabella roles
-            for (Map.Entry<Unit, Role> entry : employee.roles.entrySet()) {
-                addEmployeeRole(employee, entry.getKey(), entry.getValue());
-            }
-
-            // Chiude la connessione
-            stmt.close();
-            con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    */
     public static void addEmployee(Employee employee){
         try
         {

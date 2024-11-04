@@ -89,16 +89,6 @@ public class OrgChartDAO {
             String where=removeOUR;
             where+="OrgChartID = "+getID(oc.getName())+";";
             stmt.executeUpdate(where);
-            //qui elimino tutti i dipendenti associati all'organigramma eliminato. Non vado a toccare unità e ruoli poiché compaiono in altri org
-            /*
-            List<Employee> employees = new ArrayList<>();
-            employees.addAll(EmployeeDAO.getAllEmployees(oc));
-            for(Employee emp:employees){
-                if(emp.getOrgchart().equals(getID(oc.getName())))
-                    EmployeeDAO.removeEmployee(emp);
-            }
-
-             */
         } catch (SQLException e) {
             e.printStackTrace();
         }

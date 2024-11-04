@@ -45,6 +45,7 @@ public class Scene2Controller {
     //TextField Section
     @FXML
     private TextField OrgName;
+    @FXML
     private Label OrgLabel;
     //units
     @FXML

@@ -102,15 +102,6 @@ public class RoleDAO {
             String where=removeRoleEmployee;
             where+="RoleName = \'"+role.getName()+"\';";
             stmt.executeUpdate(where);
-            /*
-            List<Employee> employees = new ArrayList<>();
-            employees.addAll(EmployeeDAO.getAllEmployees());
-            for(Employee emp:employees){
-                if(emp.roles.containsValue(role)){
-                    emp.roles.remove(emp.getUnit(role));
-                }
-            }
-            */
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,19 +116,6 @@ public class RoleDAO {
             where+="\'"+newName+"\'\n";
             where+="WHERE Name = \'"+oldRole.getName()+"\';";
             stmt.executeUpdate(where);
-            /*
-            List<Employee> employees = new ArrayList<>();
-            employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(newName, oldRole.getLevel(), oldRole.getRolePriority());
-            Unit unit;
-            for(Employee emp:employees){
-                if(emp.roles.containsValue(oldRole)){
-                    unit=emp.getUnit(oldRole);
-                    emp.roles.remove(unit);
-                    emp.assignRole(unit, newRole);
-                }
-            }
-             */
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,20 +132,6 @@ public class RoleDAO {
             where+="WHERE Name = \'"+oldRole.getName()+"\';";
             stmt.executeUpdate(where);
 
-            /*
-            List<Employee> employees = new ArrayList<>();
-            employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(oldRole.getName(), level, oldRole.getRolePriority());
-            Unit unit;
-            for(Employee emp:employees){
-                if(emp.roles.containsValue(oldRole)){
-                    unit=emp.getUnit(oldRole);
-                    emp.roles.remove(unit);
-                    emp.assignRole(unit, newRole);
-                }
-            }
-             */
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -182,19 +146,6 @@ public class RoleDAO {
             where+=priority+"\n";
             where+="WHERE Name = \'"+oldRole.getName()+"\';";
             stmt.executeUpdate(where);
-            /*
-            List<Employee> employees = new ArrayList<>();
-            employees.addAll(EmployeeDAO.getAllEmployees());
-            Role newRole= new Role(oldRole.getName(), oldRole.getLevel(), priority);
-            Unit unit;
-            for(Employee emp:employees){
-                if(emp.roles.containsValue(oldRole)){
-                    unit=emp.getUnit(oldRole);
-                    emp.roles.remove(unit);
-                    emp.assignRole(unit, newRole);
-                }
-            }
-             */
 
         } catch (SQLException e) {
             e.printStackTrace();
