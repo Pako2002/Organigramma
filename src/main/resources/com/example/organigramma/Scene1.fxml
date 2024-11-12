@@ -5,13 +5,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="loginPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.organigramma.UserInterface.Scene1Controller">
+<AnchorPane fx:id="loginPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.organigramma.UserInterface.Scene1Controller">
    <children>
-      <TextField fx:id="nameTextField" layoutX="225.0" layoutY="165.0" />
-      <Label layoutX="147.0" layoutY="169.0" text="username" />
-      <TextField fx:id="passwordTextField" layoutX="226.0" layoutY="200.0" />
-      <Label layoutX="148.0" layoutY="204.0" text="password" />
-      <Button fx:id="loginButton" layoutX="278.0" layoutY="237.0" mnemonicParsing="false" onAction="#login" text="login" />
-      <Button fx:id="SigninButton" layoutX="276.0" layoutY="270.0" mnemonicParsing="false" onAction="#signin" text="signin" />
+      <TextField fx:id="nameTextField" layoutX="725.0" layoutY="370.0" prefWidth="150.0" />
+      <Label layoutX="667.0" layoutY="374.0" text="username" />
+      <TextField fx:id="passwordTextField" layoutX="725.0" layoutY="405.0" prefWidth="150.0" />
+      <Label layoutX="668.0" layoutY="409.0" text="password" />
+      <Button fx:id="loginButton" layoutX="775.0" layoutY="442.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="50.0" text="login" />
+      <Button fx:id="SigninButton" layoutX="775.0" layoutY="475.0" mnemonicParsing="false" onAction="#signin" prefHeight="25.0" prefWidth="50.0" text="signin" />
    </children>
 </AnchorPane>

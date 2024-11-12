@@ -8,9 +8,4 @@ public interface Unit{
     public int getLevel();
 
     public void setLevel(int level);
-
-    public OrgChart getOrgchart();
-
-    public void setOrgchart(OrgChart orgchart);
-
 }

@@ -187,7 +187,7 @@ public class Scene2Controller {
             UnitDAO.addUnit(unit);
             UnitList.getInstance().add(unit.getName());
             UnitListLabel.setText(UnitList.getInstance().toString());
-            System.out.println(UnitList.getInstance().getUnitsNames().getFirst());
+            //System.out.println(UnitList.getInstance().getUnitsNames().getFirst());
             unclickable=true;
             AddUnitButton.setDisable(unclickable);
             UnitListLabel.setText("");
@@ -331,7 +331,7 @@ public class Scene2Controller {
         try{
             Employee emp= new Employee(employeeID,employeeName,orgChart);
             EmployeeList.getInstance().add(emp.getName());
-            System.out.println(EmployeeList.getInstance().toString());
+            //System.out.println(EmployeeList.getInstance().toString());
             EmployeeDAO.addEmployee(emp);
             employees.add(emp);
             EmployeeLabel.setText("Nessun Errore");

@@ -5,13 +5,11 @@ import java.util.*;
 public class CompoundUnit implements Unit{
     public String name;
     public int level;
-    public OrgChart orgchart;
     public List<CompoundUnit> subUnits= new LinkedList<>();
 
     public CompoundUnit(String name, int level) {
         this.name = name;
         this.level = level;
-        this.orgchart = orgchart;
     }
 
     public void addSubUnit(CompoundUnit subUnit){
@@ -51,14 +49,6 @@ public class CompoundUnit implements Unit{
     @Override
     public void setLevel(int level) {
         this.level = level;
-    }
-    @Override
-    public OrgChart getOrgchart() {
-        return this.orgchart;
-    }
-    @Override
-    public void setOrgchart(OrgChart orgchart) {
-        this.orgchart = orgchart;
     }
 
     public List<CompoundUnit> getSubUnits() {

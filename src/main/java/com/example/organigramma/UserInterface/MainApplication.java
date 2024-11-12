@@ -15,7 +15,7 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         Parent root=  FXMLLoader.load(getClass().getResource("/com/example/organigramma/Scene1.fxml"));
         Scene scene = new Scene(root);
-        stage.setTitle("Hello!");
+        stage.setTitle("Organigramma!");
         stage.setScene(scene);
         stage.show();
 
