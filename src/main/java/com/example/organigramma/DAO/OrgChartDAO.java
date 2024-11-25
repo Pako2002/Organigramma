@@ -15,13 +15,13 @@ public class OrgChartDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
-    private static final String oneChart= "SELECT * FROM orgcharts ";
-    private static final String allOrgChart= "SELECT * FROM orgcharts ";
-    private static final String addOrgChart= "INSERT INTO orgcharts (OrgChartName, UserID)\n";
-    private static final String removeOrgChart="DELETE FROM orgcharts WHERE ";
-    private static final String getFromOUR= "SELECT * FROM orgchartunitsroles\n";
-    private static final String removeOUR= "DELETE FROM orgchartunitsroles WHERE ";
-    private static final String changeName= "UPDATE orgcharts\n"+"SET OrgChartName = ";
+    private static final String oneChart= "SELECT * FROM orgchart ";
+    private static final String allOrgChart= "SELECT * FROM orgchart ";
+    private static final String addOrgChart= "INSERT INTO orgchart (OrgChartName, UserID)\n";
+    private static final String removeOrgChart="DELETE FROM orgchart WHERE ";
+    private static final String getFromOUR= "SELECT * FROM orgchartunitrole\n";
+    private static final String removeOUR= "DELETE FROM orgchartunitrole WHERE ";
+    private static final String changeName= "UPDATE orgchart\n"+"SET OrgChartName = ";
 
     private static OrgChartDAO instance;
     OrgChartDAO(){}

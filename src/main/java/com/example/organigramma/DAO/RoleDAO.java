@@ -17,16 +17,16 @@ public class RoleDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
-    private static final String oneRole= "SELECT * FROM roles ";
-    private static final String allRoles= "SELECT * FROM roles";
-    private static final String addRole= "INSERT INTO roles (Name, Level, Priority)\n";
-    private static final String addOrgChartUnitsRoles= "INSERT INTO orgchartunitsroles (OrgChartID, UnitName, RoleName, Level)\n";
-    private static final String removeOrgChartUnitsRoles= "DELETE FROM orgchartunitsroles WHERE \n";
-    private static final String removeRole="DELETE FROM roles WHERE ";
-    private static final String removeRoleEmployee= "DELETE FROM employeeroles WHERE ";
-    private static final String changeName= "UPDATE roles\n"+"SET Name = ";
-    private static final String changeLevel= "UPDATE roles\n"+"SET Level =";
-    private static final String changePriority= "UPDATE roles\n"+"SET Priority =";
+    private static final String oneRole= "SELECT * FROM role ";
+    private static final String allRoles= "SELECT * FROM role";
+    private static final String addRole= "INSERT INTO role (Name, Level, Priority)\n";
+    private static final String addOrgChartUnitsRoles= "INSERT INTO orgchartunitrole (OrgChartID, UnitName, RoleName, Level)\n";
+    private static final String removeOrgChartUnitsRoles= "DELETE FROM orgchartunitrole WHERE \n";
+    private static final String removeRole="DELETE FROM role WHERE ";
+    private static final String removeRoleEmployee= "DELETE FROM employeerole WHERE ";
+    private static final String changeName= "UPDATE role\n"+"SET Name = ";
+    private static final String changeLevel= "UPDATE role\n"+"SET Level =";
+    private static final String changePriority= "UPDATE role\n"+"SET Priority =";
 
     private static RoleDAO istance;
     RoleDAO(){}

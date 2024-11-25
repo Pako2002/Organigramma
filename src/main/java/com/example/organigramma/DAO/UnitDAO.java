@@ -14,12 +14,12 @@ public class UnitDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
-    private static final String allUnits= "SELECT * FROM units\n";
-    private static final String addUnit= "INSERT INTO units (Name, Level)\n";
-    private static final String removeUnit="DELETE FROM units WHERE ";
-    private static final String removeUnitRole= "DELETE FROM employeeroles WHERE ";
-    private static final String changeName= "UPDATE units\n"+"SET Name = ";
-    private static final String changeLevel= "UPDATE units\n"+"SET Level =";
+    private static final String allUnits= "SELECT * FROM unit\n";
+    private static final String addUnit= "INSERT INTO unit (Name, Level)\n";
+    private static final String removeUnit="DELETE FROM unit WHERE ";
+    private static final String removeUnitRole= "DELETE FROM employeerole WHERE ";
+    private static final String changeName= "UPDATE unit\n"+"SET Name = ";
+    private static final String changeLevel= "UPDATE unit\n"+"SET Level =";
 
     private static UnitDAO istance;
     UnitDAO(){}
@@ -31,20 +31,15 @@ public class UnitDAO {
         return istance;
     }
 
-    public static void addUnit(Unit unit){
-        try
-        {
-            Connection con= DriverManager.getConnection(url, user, password);
-            Statement stmt= con.createStatement();
+    public static void addUnit(Unit unit)throws SQLException{
+        Connection con= DriverManager.getConnection(url, user, password);
+        Statement stmt= con.createStatement();
 
-            String values=addUnit;
-            values+="VALUES ";
-            values+= "(\'"+unit.getName()+"\', "+unit.getLevel()+");";
-            System.out.println(values);
-            stmt.executeUpdate(values);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String values=addUnit;
+        values+="VALUES ";
+        values+= "(\'"+unit.getName()+"\', "+unit.getLevel()+");";
+        System.out.println(values);
+        stmt.executeUpdate(values);
     }
 
     public static void removeUnit(Unit unit){

@@ -190,7 +190,7 @@ public class Scene2Controller {
             //System.out.println(UnitList.getInstance().getUnitsNames().getFirst());
             unclickable=true;
             AddUnitButton.setDisable(unclickable);
-            UnitListLabel.setText("");
+            UnitListLabel.setText("Elenco Unità:");
             UnitListLabel.setStyle("-fx-text-fill: green;");
         }catch(Exception e){
             UnitListLabel.setText("Errore nell'inserimento del'unità");
@@ -213,7 +213,7 @@ public class Scene2Controller {
                 UnitList.getInstance().add(subUnit.getName());
                 UnitListLabel.setStyle("-fx-text-fill: green;");
                 UnitListLabel.setText(UnitList.getInstance().toString());
-            }catch (Exception e){
+            }catch (SQLException e){
                 e.printStackTrace();
                 UnitListLabel.setText("Errore nell'inserimento della sotto unità");
                 UnitListLabel.setStyle("-fx-text-fill: red;");
@@ -222,7 +222,7 @@ public class Scene2Controller {
         }
         else{
             try{
-                setParent(unit.getSubUnits(),subUnit,rootUnit,0).addSubUnit(subUnit);
+                setParent(unit.getSubUnits(),rootUnit,0).addSubUnit(subUnit);
                 UnitDAO.addUnit(subUnit);
                 UnitList.getInstance().add(subUnit.getName());
                 UnitListLabel.setStyle("-fx-text-fill: green;");
@@ -237,16 +237,16 @@ public class Scene2Controller {
         SubUnitLevel.clear();
 
     }
-    private CompoundUnit setParent(List<CompoundUnit> units, CompoundUnit subUnit,String rootUnit, int i){
+    private CompoundUnit setParent(List<CompoundUnit> units,String rootUnit, int i){
         if(i>=units.size())
             return null;
         if(units.get(i).getName().equals(rootUnit)){
             return units.get(i);
         }
         if(units.get(i).hasSubUnit()){
-            setParent(units.get(i).getSubUnits(),subUnit,rootUnit,0);
+            setParent(units.get(i).getSubUnits(),rootUnit,0);
         }
-        return setParent(units,subUnit,rootUnit,i+1);
+        return setParent(units,rootUnit,i+1);
     }
     public void NextRole(ActionEvent event) throws IOException, SQLException {  //Questo pulsante porta alla sezione per inserire i ruoli
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/organigramma/AddRoleScene.fxml"));
@@ -465,8 +465,8 @@ public class Scene2Controller {
     private void showUnitDetails(CompoundUnit unit) {
         StringBuilder details = new StringBuilder("Dettagli Unità: " + unit.getName() + "\n");
         details.append("Livello: " + unit.getLevel() + "\n");
-        details.append("Sottounità:\n");
 
+        details.append("Sottounità:\n");
         for (CompoundUnit child : unit.getSubUnits()) {
             details.append("- " + child.getName() + "\n");
         }

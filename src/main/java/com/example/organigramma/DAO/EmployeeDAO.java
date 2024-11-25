@@ -16,15 +16,15 @@ public class EmployeeDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
-    private static final String allEmployees= "SELECT * FROM employees\n";
-    private static final String addEmployee= "INSERT INTO employees (ID, Name, OrgChartID)\n";
-    private static final String addEmployeeRole= "INSERT INTO employeeroles (EmployeeID, UnitName, RoleName)\n";
-    private static final String removeEmployee="DELETE FROM employees WHERE ";
-    private static final String removeEmployeeRole= "DELETE FROM employeeroles WHERE ";
-    private static final String changeID= "UPDATE Employees\n"+"SET ID =";
-    private static final String changeName= "UPDATE Employees\n"+"SET Name =";
-    private static final String changeUnit= "UPDATE EmployeeRoles\n"+"SET UnitName =";
-    private static final String changeRole= "UPDATE EmployeeRoles\n"+"SET RoleName =";
+    private static final String allEmployees= "SELECT * FROM employee\n";
+    private static final String addEmployee= "INSERT INTO employee (ID, Name, OrgChartID)\n";
+    private static final String addEmployeeRole= "INSERT INTO employeerole (EmployeeID, UnitName, RoleName)\n";
+    private static final String removeEmployee="DELETE FROM employee WHERE ";
+    private static final String removeEmployeeRole= "DELETE FROM employeerole WHERE ";
+    private static final String changeID= "UPDATE Employee\n"+"SET ID =";
+    private static final String changeName= "UPDATE Employee\n"+"SET Name =";
+    private static final String changeUnit= "UPDATE EmployeeRole\n"+"SET UnitName =";
+    private static final String changeRole= "UPDATE EmployeeRole\n"+"SET RoleName =";
 
     private static EmployeeDAO istance;
     EmployeeDAO(){}

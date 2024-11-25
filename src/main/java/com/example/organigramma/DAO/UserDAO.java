@@ -10,13 +10,13 @@ public class UserDAO {
     private static final String url = "jdbc:mysql://localhost:3306/organigrammaaziendale";
     private static final String user="root";
     private static final String password="";
-    private static final String oneUser="SELECT * FROM users ";
-    private static final String userID="SELECT UserID FROM users\n";
-    private static final String allUser= "SELECT * FROM users";
-    private static final String addUser= "INSERT INTO users (UserName, Password)\n";
-    private static final String removeUser="DELETE FROM users WHERE ";
-    private static final String changeName= "UPDATE users\n"+"SET UserName = ";
-    private static final String changePassword= "UPDATE users\n"+"SET Password =";
+    private static final String oneUser="SELECT * FROM user ";
+    private static final String userID="SELECT UserID FROM user\n";
+    private static final String allUser= "SELECT * FROM user";
+    private static final String addUser= "INSERT INTO user (UserName, Password)\n";
+    private static final String removeUser="DELETE FROM user WHERE ";
+    private static final String changeName= "UPDATE user\n"+"SET UserName = ";
+    private static final String changePassword= "UPDATE user\n"+"SET Password =";
 
     private static UserDAO instance;
     UserDAO() {}
