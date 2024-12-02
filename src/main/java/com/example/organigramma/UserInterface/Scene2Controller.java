@@ -3,6 +3,7 @@ package com.example.organigramma.UserInterface;
 import com.example.organigramma.Composite.*;
 import com.example.organigramma.Singleton.*;
 import com.example.organigramma.DAO.*;
+import com.example.organigramma.FactoryMethod.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -113,7 +114,7 @@ public class Scene2Controller {
     //Variables Section
     private User user;
     private OrgChart orgChart;
-    private CompoundUnit unit;
+    private Unit unit;
     private List<Employee> employees= new LinkedList<>();
     private List<Role> roles= new LinkedList<>();
 
@@ -203,7 +204,7 @@ public class Scene2Controller {
         String subUnitName = SubUnitName.getText();
         int subUnitLevel = Integer.parseInt(SubUnitLevel.getText());
 
-        CompoundUnit subUnit= new CompoundUnit(subUnitName, subUnitLevel);
+        Unit subUnit= new CompoundUnit(subUnitName, subUnitLevel);
 
         //In base alla scelta dell'utente aggiungeremo un unità come sotto-unità di un'altra specificata da lui
         if(rootUnit.equals(unit.getName())){
@@ -237,7 +238,7 @@ public class Scene2Controller {
         SubUnitLevel.clear();
 
     }
-    private CompoundUnit setParent(List<CompoundUnit> units,String rootUnit, int i){
+    private Unit setParent(List<Unit> units,String rootUnit, int i){
         if(i>=units.size())
             return null;
         if(units.get(i).getName().equals(rootUnit)){
@@ -269,7 +270,7 @@ public class Scene2Controller {
             stage.show();
         }
     }
-    public void setUnit(CompoundUnit unit){
+    public void setUnit(Unit unit){
         this.unit=unit;
     }
     //NewOrg Section (RoleScene Section)
@@ -421,7 +422,8 @@ public class Scene2Controller {
         this.employees=employees;
     }
     // Disegna l'organigramma a partire dall'unità radice
-    private void drawOrgChart(Scene2Controller controller, CompoundUnit unit, double x, double y) {
+
+    private void drawOrgChart(Scene2Controller controller, Unit unit, double x, double y) {
         Rectangle rect = new Rectangle(120, 30);
         rect.setFill(Color.LIGHTBLUE);
         rect.setStroke(Color.BLACK);
@@ -444,12 +446,12 @@ public class Scene2Controller {
 
         drawChild(controller,unit.getSubUnits(),x,y,rect,childY,childXStart,0);
     }
-    private void drawChild(Scene2Controller controller, List<CompoundUnit> units, double x, double y, Rectangle rect, double childY, double childXStart, int i) {
+    private void drawChild(Scene2Controller controller, List<Unit> units, double x, double y, Rectangle rect, double childY, double childXStart, int i) {
         if (i >= units.size()) {
             return;
         }
 
-        CompoundUnit child = units.get(i);
+        Unit child = units.get(i);
         Line line = new Line(x, y + rect.getHeight(), childXStart + 100, childY);
         controller.OrgChartPane.getChildren().add(line);
 
@@ -462,12 +464,12 @@ public class Scene2Controller {
         drawChild(controller, units, x, y, rect, childY, childXStart, i + 1);
     }
     // Mostra i dettagli dell'unità in un popup
-    private void showUnitDetails(CompoundUnit unit) {
+    private void showUnitDetails(Unit unit) {
         StringBuilder details = new StringBuilder("Dettagli Unità: " + unit.getName() + "\n");
         details.append("Livello: " + unit.getLevel() + "\n");
 
         details.append("Sottounità:\n");
-        for (CompoundUnit child : unit.getSubUnits()) {
+        for (Unit child : unit.getSubUnits()) {
             details.append("- " + child.getName() + "\n");
         }
 
@@ -531,8 +533,8 @@ public class Scene2Controller {
             stage.close();
         }
     }
-
-    private void test(){
+/*
+    private void test() {
         System.out.println(orgChart.getName());
         unit.showDetails();
         for (Employee emp : employees) {
@@ -540,4 +542,6 @@ public class Scene2Controller {
         }
 
     }
+*/
+
 }

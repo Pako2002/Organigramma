@@ -5,14 +5,14 @@ import java.util.*;
 public class CompoundUnit implements Unit{
     public String name;
     public int level;
-    public List<CompoundUnit> subUnits= new LinkedList<>();
+    public List<Unit> subUnits= new LinkedList<>();
 
     public CompoundUnit(String name, int level) {
         this.name = name;
         this.level = level;
     }
-
-    public void addSubUnit(CompoundUnit subUnit){
+    @Override
+    public void addSubUnit(Unit subUnit){
         try {
             if(!subUnits.contains(subUnit) && subUnit.getLevel()>this.getLevel())
                 subUnits.add(subUnit);
@@ -22,7 +22,7 @@ public class CompoundUnit implements Unit{
             System.out.println("'"+subUnit.getName()+"' è un'unità già presente nell'organigramma o di livello superiore a '"+this.getName()+"'");
         }
     }
-
+    @Override
     public void removeSubUnit(Unit subUnit){
         try {
             if(subUnits.contains(subUnit))
@@ -50,16 +50,16 @@ public class CompoundUnit implements Unit{
     public void setLevel(int level) {
         this.level = level;
     }
-
-    public List<CompoundUnit> getSubUnits() {
+    @Override
+    public List<Unit> getSubUnits() {
         return this.subUnits;
     }
-
+    @Override
     public boolean hasSubUnit(){
         return this.getSubUnits() != null;
     }
-
-    public void setSubUnits(List<CompoundUnit> subUnits) {
+    @Override
+    public void setSubUnits(List<Unit> subUnits) {
         this.subUnits = subUnits;
     }
 

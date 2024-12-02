@@ -6,7 +6,6 @@ import com.example.organigramma.Composite.CompoundUnit;
 
 
 public class ConcreteUnit implements UnitFactory{
-    @Override
     public Unit createUnit(String name, int level) {
         return new CompoundUnit(name, level);
     }

@@ -16,7 +16,7 @@ public class Role{
     }
 
     public void setName(String name) {
-        this.roleName = roleName;
+        this.roleName = name;
     }
 
     public int getLevel() {
